@@ -61,3 +61,7 @@ Sigue estos pasos para desplegar el proyecto en tu entorno de desarrollo:
 - **Página Principal ("Aplicacion")**: Para acceder a la página principal de tu proyecto, abre un navegador web e ingresa la URL correspondiente. Por lo general, será [http://localhost/nombre_de_tu_proyecto/Index](http://localhost/nombre_de_tu_proyecto/Index).
 
 - **Página de Mediciones ("Mediciones")**: La página de mediciones está diseñada para que los usuarios registrados puedan ver sus mediciones y otra información relevante. Accede a esta página a través de la URL, pero para poder ver las mediciones deberás haberte registrado previamente[http://localhost/nombre_de_tu_proyecto/Mediciones](http://localhost/nombre_de_tu_proyecto/Mediciones).
+
+## Autor
+
+- [@MarioCliment](https://www.github.com/MarioCliment)
