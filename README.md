@@ -49,7 +49,7 @@ Sigue estos pasos para desplegar el proyecto en tu entorno de desarrollo:
    - En la sección "Variables del sistema," selecciona la variable "Path" (o "PATH") y haz clic en "Editar..."
    - En la ventana "Editar variable de sistema," agrega la ruta completa de la carpeta PHP (por lo general, `C:\xampp\php`) y luego haz clic en "Aceptar."
 
-4. **Reinicia la Línea de Comandos o Terminal**: Es importante reiniciar la línea de comandos o la terminal para que los cambios surtan efecto. Puedes cerrar y volver a abrir la línea de comandos o reiniciar tu computadora.
+4. **Reinicia la Línea de Comandos o Terminal**: Es importante reiniciar la línea de comandos o la terminal para que los cambios surtan efecto. Puedes cerrar y volver a abrir la línea de comandos o reiniciar tu ordenador.
 
 5. **Descarga e Importa la Base de Datos**: Debes descargar la base de datos que se encuentra en el proyecto y luego importarla en phpMyAdmin. Sigue estos pasos:
 
@@ -64,7 +64,7 @@ Sigue estos pasos para desplegar el proyecto en tu entorno de desarrollo:
 
 - **Página Principal ("Aplicacion")**: Para acceder a la página principal de tu proyecto, abre un navegador web e ingresa la URL correspondiente. Por lo general, será [http://localhost/nombre_de_tu_proyecto/Index](http://localhost/nombre_de_tu_proyecto/Index).
 
-- **Página de Mediciones ("Mediciones")**: La página de mediciones está diseñada para que los usuarios registrados puedan ver sus mediciones y otra información relevante. Accede a esta página a través de la URL, pero para poder ver las mediciones deberás haberte registrado previamente[http://localhost/nombre_de_tu_proyecto/Mediciones](http://localhost/nombre_de_tu_proyecto/Mediciones).
+- **Página de Mediciones ("Mediciones")**: La página de mediciones está diseñada para que los usuarios registrados puedan ver sus mediciones y otra información relevante. Accede a esta página a través de la URL, pero para poder ver las mediciones deberás haber iniciado sesión previamente [http://localhost/nombre_de_tu_proyecto/Mediciones](http://localhost/nombre_de_tu_proyecto/Mediciones).
 
 ## Autor
 
