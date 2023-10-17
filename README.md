@@ -45,7 +45,7 @@ Sigue estos pasos para desplegar el proyecto en tu entorno de desarrollo:
    - En la sección "Variables del sistema," selecciona la variable "Path" (o "PATH") y haz clic en "Editar..."
    - En la ventana "Editar variable de sistema," agrega la ruta completa de la carpeta PHP (por lo general, `C:\xampp\php`) y luego haz clic en "Aceptar."
 
-4. **Reinicia la Línea de Comandos o Terminal**: Es importante reiniciar la línea de comandos o la terminal para que los cambios surtan efecto. Puedes cerrar y volver a abrir la línea de comandos o reiniciar tu computadora.
+4. **Reinicia la Línea de Comandos o Terminal**: Es importante reiniciar la línea de comandos o la terminal para que los cambios surtan efecto. Puedes cerrar y volver a abrir la línea de comandos o reiniciar tu ordenador.
 
 5. **Descarga e Importa la Base de Datos**: Debes descargar la base de datos que se encuentra en el proyecto y luego importarla en phpMyAdmin. Sigue estos pasos:
 
