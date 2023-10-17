@@ -72,8 +72,10 @@ Para ejecutar las pruebas de PHPUnit en este proyecto, puedes seguir estos pasos
    cd C:\xampp\htdocs\nombre_de_tu_proyecto
 Para ejecutar las pruebas unitarias, utiliza el comando phpunit seguido del archivo de prueba que deseas ejecutar, como este ejemplo:
 
-    ```bash
+      ```bash
       phpunit --bootstrap archivo_de_prueba.php test/nombre_de_prueba.php
+
+
 Asegúrate de reemplazar "archivo_de_prueba.php" y "nombre_de_prueba.php" con los nombres reales de tus archivos de prueba.
 
 Ejecutar este comando te proporcionará resultados y resultados de pruebas unitarias para tu proyecto.
