@@ -8,15 +8,19 @@ Este forma parte del proyecto 3A (Biometria y Medio Ambiente), en concreto podem
 
 El proyecto se encuentra dividido en varias carpetas para organizar de manera efectiva el código y los recursos. A continuación, se detalla la estructura del proyecto:
 
+- **docs**: La carpeta "docs" es el lugar donde puedes almacenar la documentación relacionada con tu proyecto. Puedes incluir documentos como guías de usuario, manuales técnicos o cualquier otro tipo de documentación.
+
+- **src**: La carpeta "src" contiene todos las carpetas del servidor para su correcto funcionamiento y se explica su contenido a continuación.
+
 - **ux**: La carpeta "ux" alberga los archivos JavaScript (Contenidos en la carpeta "logica") y recursos relacionados con la interfaz de usuario (Aplicacion.html y Mediciones.html). Aquí se encuentran los archivos JavaScript utilizados para la lógica del cliente, así como otros recursos relacionados con la interfaz de usuario.
 
 - **logica**: La carpeta "logica" contiene la lógica principal de tu aplicación. Aquí se manejan las operaciones principales, como el inicio de sesión, el cierre de sesión, el acceso a la base de datos y otras funciones esenciales. También es donde se encuentran los archivos de prueba para las pruebas de lógica.
 
 - **rest**: La carpeta "rest" alberga la API REST de tu proyecto. Aquí se definen los servicios web que permiten la comunicación entre tu aplicación y otros sistemas. También es el lugar donde puedes realizar pruebas unitarias de tus servicios REST.
 
-- **docs**: La carpeta "docs" es el lugar donde puedes almacenar la documentación relacionada con tu proyecto. Puedes incluir documentos como guías de usuario, manuales técnicos o cualquier otro tipo de documentación.
-
 - **bbdd**: La carpeta "bbdd" se utiliza para almacenar archivos relacionados con la base de datos. Esto puede incluir archivos de respaldo o scripts SQL para configurar la base de datos.
+
+
 
 ## Requisitos Previos
 
