@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $conn;
+    private $conn = null;
 
     // -------------------------------------------------
     //
@@ -14,14 +14,10 @@ class Database {
     //
     // -------------------------------------------------
     public function __construct() {
-        $servername = "localhost";
-        $username = "admin";
-        $usernameROOT = "root";
-        $password = "1234";
-        $passwordROOT = "";
-        $dbname = "PBIOMED";
-
-        //$this->conn = new mysqli($servername, $username, $password, $dbname);
+        $servername = DB_HOST;
+        $usernameROOT = DB_USERNAME;
+        $passwordROOT = DB_PASSWORD;
+        $dbname = DB_NAME;
 
         $this->conn = new mysqli($servername, $usernameROOT, $passwordROOT, $dbname);
 
@@ -57,6 +53,74 @@ class Database {
     // -------------------------------------------------
     public function closeConnection() {
         $this->conn->close();
+    }
+
+    public function select($query = "" , $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params );
+            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);				
+            $stmt->close();
+            return $result;
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
+
+    public function selectFetch($query = "" , $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params );
+            $result = $stmt->get_result()->fetch_object();				
+            $stmt->close();
+            return $result;
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
+
+    public function insert($query = "" , $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params );		
+            $stmt->close();
+            return true;
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
+
+    public function update($query = "" , $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params );		
+            $stmt->close();
+            return true;
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
+    
+    
+    private function executeStatement($query = "" , $params = [])
+    {
+        try {
+            $stmt = $this->conn->prepare( $query );
+            if($stmt === false) {
+                throw New Exception("Unable to do prepared statement: " . $query);
+            }
+            if( $params ) {
+                $stmt->bind_param($params[0], $params[1]);
+            }
+            $stmt->execute();
+            return $stmt;
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }	
     }
 }
 ?>

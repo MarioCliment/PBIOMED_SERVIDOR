@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /PBIOMED_SERVIDOR/src/rest/
+
+# Redirigir todas las solicitudes que no correspondan a un archivo o directorio existente
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php/$1 [QSA,L]

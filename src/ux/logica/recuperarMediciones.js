@@ -1,4 +1,4 @@
-const medicionesTable = document.getElementById('medicionesTable');
+const medicionesTable = document.getElementById('medicionesTableBody');
 const stopUpdateButton = document.getElementById('stopUpdate');
 
 // Verifica si los elementos HTML existen
@@ -9,39 +9,51 @@ if (!medicionesTable) {
 } else {
     let updating = true;
 
-    function updateMediciones() {
-        if (updating) {
-            const xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                    if (this.status == 200) {
-                        console.log("Respuesta JSON:", this.responseText);
-                        try {
-                            const medicionesData = JSON.parse(this.responseText);
-                            medicionesTable.innerHTML = '';
-                            medicionesData.forEach((medicion) => {
-                                medicionesTable.innerHTML += `<tr>
-                                    <td>${medicion.id_medicion}</td>
-                                    <td>${medicion.tiempo}</td>
-                                    <td>${medicion.temperatura}</td>
-                                    <td>${medicion.concentracion}</td>
-                                </tr>`;
-                            });
-                        } catch (error) {
-                            console.error("Error al analizar JSON:", error);
-                        }
-                    } else {
-                        console.error("Error de solicitud:", this.status, this.statusText);
-                    }
-                    setTimeout(updateMediciones, 1000);
+    function obtenerMediciones(cb) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                try {
+                    console.log("Recibo: " + this.responseText);
+                    var medicionesData = JSON.parse(this.responseText);
+                    cb(medicionesData);
+                } catch (error) {
+                    console.error("Error al analizar JSON:", error);
                 }
-            };
-            xmlhttp.open("GET", "../rest/recuperarMediciones.php", true);
-            xmlhttp.send();
-        }
+            }
+        };
+
+        xmlhttp.open("GET", "../rest/user/measure/all/data?limit=20", true);
+        xmlhttp.send();
     }
 
-    updateMediciones();
+    function updateTable() {
+        obtenerMediciones(function (mediciones) {
+            var tableBody = document.getElementById('medicionesTableBody');
+            tableBody.innerHTML = ''; // Limpiamos el contenido actual de la tabla
+    
+            // Iteramos sobre las mediciones y agregamos filas a la tabla
+            mediciones.forEach((medicion) => {
+                var newRow = tableBody.insertRow();
+                newRow.innerHTML = `<td>${medicion.idMedicion}</td>
+                                   <td>${medicion.fecha}</td>
+                                   <td>${medicion.lugar}</td>
+                                   <td>${medicion.valor}</td>
+                                   <td>${medicion.idTipoMedicion}</td>`;
+            });
+        });
+    }
+
+    function startAutoUpdate() {
+        setInterval(function () {
+            if (updating) {
+                updateTable();
+            }
+        }, 5000); // Actualiza cada 5 segundos, ajusta según sea necesario
+    }
+
+    // Inicia la actualización automática al cargar la página
+    startAutoUpdate();
 
     stopUpdateButton.addEventListener('click', () => {
         updating = !updating;

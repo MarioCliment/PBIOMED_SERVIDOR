@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 16, 2023 at 07:44 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 31-10-2023 a las 15:35:36
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,108 +18,197 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pbiomed`
+-- Base de datos: `pbiomed`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mediciones`
+-- Estructura de tabla para la tabla `mediciones`
 --
 
 CREATE TABLE `mediciones` (
-  `id_medicion` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `tiempo` datetime DEFAULT NULL,
-  `temperatura` decimal(5,2) DEFAULT NULL,
-  `concentracion` decimal(5,2) DEFAULT NULL
+  `idMedicion` int(10) NOT NULL,
+  `fecha` varchar(20) NOT NULL,
+  `lugar` varchar(25) NOT NULL,
+  `valor` int(10) NOT NULL,
+  `idTipoMedicion` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `mediciones`
---
-
-INSERT INTO `mediciones` (`id_medicion`, `id_usuario`, `tiempo`, `temperatura`, `concentracion`) VALUES
-(1, 1, '2023-10-15 20:00:00', 36.50, 5.20),
-(2, 1, '2023-10-15 23:00:00', 36.50, 5.20),
-(3, 1, '2023-10-15 23:59:59', 36.50, 5.20),
-(4, 1, '2023-10-15 12:00:00', 25.50, 0.10),
-(5, 1, '2023-10-15 12:00:00', 25.50, 0.10),
-(6, 1, '2023-10-15 12:00:00', 25.50, 0.10),
-(7, 1, '2023-10-15 12:00:00', 25.50, 0.10),
-(8, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(9, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(10, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(11, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(12, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(13, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(14, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(15, 1, '0000-00-00 00:00:00', 25.50, 0.10),
-(16, 1, '0000-00-00 00:00:00', 25.50, 0.10);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `sonda`
 --
 
-CREATE TABLE `usuarios` (
-  `id_usuario` int(11) NOT NULL,
-  `Nombre` varchar(50) DEFAULT NULL,
-  `Apellidos` varchar(50) DEFAULT NULL,
-  `user` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL
+CREATE TABLE `sonda` (
+  `idSonda` int(10) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `estado` enum('correcto','averiado') NOT NULL DEFAULT 'correcto'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `telefono`
+--
+
+CREATE TABLE `telefono` (
+  `email` varchar(50) NOT NULL,
+  `telefono` int(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipomedicion`
+--
+
+CREATE TABLE `tipomedicion` (
+  `idTipoMedicion` int(10) NOT NULL,
+  `medida` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `email` varchar(50) NOT NULL,
+  `contrasenya` varchar(20) NOT NULL,
+  `rol` varchar(10) NOT NULL,
+  `nombreApellidos` varchar(30) NOT NULL,
+  `nickname` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario-medicion`
+--
+
+CREATE TABLE `usuario-medicion` (
+  `email` varchar(50) NOT NULL,
+  `idMedicion` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario-sonda`
+--
+
+CREATE TABLE `usuario-sonda` (
+  `email` varchar(50) NOT NULL,
+  `idSonda` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `usuarios`
---
-
-INSERT INTO `usuarios` (`id_usuario`, `Nombre`, `Apellidos`, `user`, `password`) VALUES
-(1, 'Mario', 'Climent', 'mario.climent', '1234');
-
---
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `mediciones`
+-- Indices de la tabla `mediciones`
 --
 ALTER TABLE `mediciones`
-  ADD PRIMARY KEY (`id_medicion`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD PRIMARY KEY (`idMedicion`),
+  ADD KEY `idTipoMedicion` (`idTipoMedicion`),
+  ADD KEY `idMedicion` (`idMedicion`);
 
 --
--- Indexes for table `usuarios`
+-- Indices de la tabla `sonda`
 --
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id_usuario`);
+ALTER TABLE `sonda`
+  ADD PRIMARY KEY (`idSonda`),
+  ADD KEY `idSonda` (`idSonda`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indices de la tabla `telefono`
+--
+ALTER TABLE `telefono`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indices de la tabla `tipomedicion`
+--
+ALTER TABLE `tipomedicion`
+  ADD PRIMARY KEY (`idTipoMedicion`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`email`),
+  ADD UNIQUE KEY `nickname` (`nickname`),
+  ADD KEY `email` (`email`);
+
+--
+-- Indices de la tabla `usuario-medicion`
+--
+ALTER TABLE `usuario-medicion`
+  ADD PRIMARY KEY (`email`,`idMedicion`),
+  ADD KEY `idMedicion` (`idMedicion`);
+
+--
+-- Indices de la tabla `usuario-sonda`
+--
+ALTER TABLE `usuario-sonda`
+  ADD PRIMARY KEY (`email`,`idSonda`),
+  ADD KEY `idSonda` (`idSonda`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `mediciones`
+-- AUTO_INCREMENT de la tabla `mediciones`
 --
 ALTER TABLE `mediciones`
-  MODIFY `id_medicion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idMedicion` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de la tabla `sonda`
 --
-ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `sonda`
+  MODIFY `idSonda` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT de la tabla `tipomedicion`
+--
+ALTER TABLE `tipomedicion`
+  MODIFY `idTipoMedicion` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `mediciones`
+-- Filtros para la tabla `mediciones`
 --
 ALTER TABLE `mediciones`
-  ADD CONSTRAINT `mediciones_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+  ADD CONSTRAINT `mediciones_ibfk_1` FOREIGN KEY (`idTipoMedicion`) REFERENCES `tipomedicion` (`idTipoMedicion`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `telefono`
+--
+ALTER TABLE `telefono`
+  ADD CONSTRAINT `telefono_ibfk_1` FOREIGN KEY (`email`) REFERENCES `usuario` (`email`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario-medicion`
+--
+ALTER TABLE `usuario-medicion`
+  ADD CONSTRAINT `usuario-medicion_ibfk_1` FOREIGN KEY (`email`) REFERENCES `usuario` (`email`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario-medicion_ibfk_2` FOREIGN KEY (`idMedicion`) REFERENCES `mediciones` (`idMedicion`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario-sonda`
+--
+ALTER TABLE `usuario-sonda`
+  ADD CONSTRAINT `usuario-sonda_ibfk_1` FOREIGN KEY (`email`) REFERENCES `usuario` (`email`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario-sonda_ibfk_2` FOREIGN KEY (`idSonda`) REFERENCES `sonda` (`idSonda`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

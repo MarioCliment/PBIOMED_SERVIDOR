@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head> <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport"  content="width=witdh-device, 
+        user scalable=no,initial-scale=1.0, maximum-scale=1.0,minimum scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="shortcut icon" type="svg" href="../images/OzoneWardenBlanco.png">
+        <title>Contact Us!</title>
+    
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+        </head>
+    <header class="header" role="banner" id="header">
+        <span class="general-nav-bar">
+            <div class="logo-nav-bar">
+                <!--Logo here-->
+                <a class="logoBox" href="index.html">
+                    <img class="OzoneWardenLogo" src="images/OzoneWardenLogo.png" alt="Ozone Warden Logo">
+                </a>
+            </div>
+            <div class="nav-bar">
+                <!--menu button-->
+                <button class="iconBtn" id="menuBtn">
+                    <!--hamburger menu--->
+                    <img class="menu-icon" src="images/icons/list.svg" alt="menu icon">
+                </button>
+            </div>
+        </span>
+        <!-- Menu-->
+        <nav class="main-nav" id="menu">
+            <!--Menu content-->
+            <ul class="menu" >
+                <li class="item-menu hover"><a href="index.html" target="" class="link-menu">Inicio</a></li>
+                  <li class="item-menu hover"><a href="dev.html" class="link-menu">Equipo</a></li>
+                  <li class="item-menu hover"><a href="contact.html" class="link-menu">Contacto</a></li>
+                <!--Menu content end-->
+            </ul>
+        </nav>
+        <!--Menu end-->
+    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    transition: background-color 0.5s ease;
+    position: relative; /* Agregado para posicionar correctamente los elementos relativos al body */
+}
+
+.header {
+    position: fixed; /* Cambiado de relative a fixed para que el encabezado sea fijo en la parte superior */
+    width: 100%;
+    z-index: 2; /* Asegura que el encabezado esté por encima del cuerpo */
+    /* Resto de tu estilo para el encabezado... */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1; /* Asegura que el cuerpo esté detrás del encabezado */
+    /* Resto de tu estilo para el cuerpo... */
+}
+
+        button, input, textarea {
+            margin: 10px;
+            padding: 10px;
+            font-size: 24px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #accountIcon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        #textViewTutorialEditar {
+            font-size: 24px;
+            margin: 10px;
+            display: none;
+            color: #FFFFFF;
+        }
+
+        /* Set background color and text color for "Editar" and "Guardar" buttons */
+        #button, #editarBotonGuardar {
+            background-color: #024FC9;
+            color: #FFFFFF;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Set background color and text color for "Cancelar" button */
+        #editButtonCancelar {
+            background-color: #000000;
+            color: #FF0000;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Set text color and font size for labels */
+        label {
+            color: #024FC9;
+            font-size: 24px;
+        }
+          /* Set background color and text color for "Editar" and "Guardar" buttons */
+        #button, #editarBotonGuardar {
+            background-color: #024FC9;
+            color: #FFFFFF;
+            transition: background-color 1s ease, color 1s ease;
+        }
+
+        /* Set background color and text color for "Cancelar" button */
+        #editButtonCancelar {
+            background-color: #000000;
+            color: #FF0000;
+            transition: background-color 1s ease, color 1s ease;
+        }
+
+        /* Set text color and font size for labels */
+        label {
+            color: #024FC9;
+            font-size: 24px;
+            transition: color 1s ease; /* Added transition for text color */
+        }
+
+        .text-white {
+            color: #FFFFFF;
+        }
+        /* Rest of your styles remain unchanged */
+    </style>
+    <script>
+        function botonEditar() {
+            document.body.style.backgroundColor = '#024FC9';
+            document.querySelector('.container').style.backgroundColor = '#024FC9';
+
+            document.getElementById("button").style.display = "none";
+            document.getElementById("editButtonCancelar").style.display = "block";
+            document.getElementById("editarBotonGuardar").style.display = "block";
+            document.getElementById("textViewTutorialEditar").style.display = "block";
+              // Change text color to white for labels
+              var labels = document.querySelectorAll('label');
+            labels.forEach(function(label) {
+                label.classList.add('text-white');
+            });
+        }
+
+        function cancelarEditar() {
+            document.body.style.backgroundColor = '#FFFFFF';
+            document.querySelector('.container').style.backgroundColor = '#FFFFFF';
+            document.getElementById("button").style.display = "block";
+            document.getElementById("editButtonCancelar").style.display = "none";
+            document.getElementById("editarBotonGuardar").style.display = "none";
+            document.getElementById("textViewTutorialEditar").style.display = "none";
+              // Revert text color for labels
+              var labels = document.querySelectorAll('label');
+            labels.forEach(function(label) {
+                label.classList.remove('text-white');
+            });
+        }
+
+        function guardarEditar() {
+            document.body.style.backgroundColor = '#FFFFFF';
+            document.querySelector('.container').style.backgroundColor = '#FFFFFF';
+            document.getElementById("button").style.display = "block";
+            document.getElementById("editButtonCancelar").style.display = "none";
+            document.getElementById("editarBotonGuardar").style.display = "none";
+            document.getElementById("textViewTutorialEditar").style.display = "none";
+             // Revert text color for labels
+             var labels = document.querySelectorAll('label');
+            labels.forEach(function(label) {
+                label.classList.remove('text-white');
+            });
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <img id="accountIcon" src="config_icon.webp" alt="Account Settings Icon">
+
+    <p id="textViewTutorialEditar">Haz click para editar</p>
+
+    <label for="editTextText" id="textViewNombreEdit">Nombre:</label>
+    <input type="text" id="editTextText" value="Name">
+
+    <label for="editTextNombre" id="textViewApellidoEdit">Apellido:</label>
+    <input type="text" id="editTextNombre" value="Name">
+
+    <label for="editTextNickname" id="textViewNicknameEdit">Nickname:</label>
+    <input type="text" id="editTextNickname" value="Name">
+
+    <label for="editTextEmailAddress" id="textViewEmailEdit">Email:</label>
+    <input type="text" id="editTextEmailAddress" value="Email">
+
+    <button id="button" onclick="botonEditar()">Editar</button>
+    <button id="editButtonCancelar" style="display: none;" onclick="cancelarEditar()">Cancelar</button>
+    <button id="editarBotonGuardar" style="display: none;" onclick="guardarEditar()">Guardar</button>
+</div>
+
+</body>
+</html>

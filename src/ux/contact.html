@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"  content="width=witdh-device, 
+    user scalable=no,initial-scale=1.0, maximum-scale=1.0,minimum scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" type="svg" href="../images/OzoneWardenBlanco.png">
+    <title>Contact Us!</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+</head>
+    
+<body>
+<header class="header" role="banner" id="header">
+    <span class="general-nav-bar">
+        <div class="logo-nav-bar">
+            <!--Logo here-->
+            <a class="logoBox" href="index.html">
+                <img class="OzoneWardenLogo" src="images/OzoneWardenLogo.png" alt="Ozone Warden Logo">
+            </a>
+        </div>
+        <div class="nav-bar">
+            <!--menu button-->
+            <button class="iconBtn" id="menuBtn">
+                <!--hamburger menu--->
+                <img class="menu-icon" src="images/icons/list.svg" alt="menu icon">
+            </button>
+        </div>
+    </span>
+    <!-- Menu-->
+    <nav class="main-nav" id="menu">
+        <!--Menu content-->
+        <ul class="menu" >
+            <li class="item-menu hover"><a href="index.html" target="" class="link-menu">Inicio</a></li>
+              <li class="item-menu hover"><a href="dev.html" class="link-menu">Equipo</a></li>
+              <li class="item-menu hover"><a href="contact.html" class="link-menu">Contacto</a></li>
+            <!--Menu content end-->
+        </ul>
+    </nav>
+    <!--Menu end-->
+</header>
+
+<div class="section content">
+    <div class="slide">
+        <div class="contact-container">
+
+            <form action="https://formspree.io/f/xqkvbwbw" method="POST">
+                <h1>CONTACTO</h1>
+                <input type="text" name="name" placeholder="Nombre">
+                <input type="email" name="email" placeholder="Correo">
+                <input type="text" name="phone" placeholder="Número de télefono">
+                <textarea name="message" rows="4" placeholder="Que necesitas saber?"></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+
+        </div>
+    </div> 
+</div>
+
+<!--Footer-->
+<footer class="footer">
+    <div class="footer-group-1">
+        <div class="footer-box">
+            <ul class="footer-list">
+                <li class="item-footer-list"> 
+                    <a class="logoBox" href="index.html">
+                        <img class="OzoneWardenLogo" src="images/OzoneWardenLogo.png" alt="Ozone Warden Logo">
+                    </a>
+                </li>
+            </ul>
+           
+        </div>
+        <div class="footer-box">
+            <ul class="footer-list">
+                <li class="item-footer-list"><a href="#section-about" target="" class="link-menu">About</a></li>
+                <li class="item-footer-list"><a href="" target="" class="link-menu"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-group-2">
+        <small>&copy; 2023 <b>Ozone Warden</b> - All Rigths Reserved.</small>
+    </div>
+</footer>
+<!--Footer end-->
+
+<script src="js/menu.js"></script>
+
+</body>
+</html>

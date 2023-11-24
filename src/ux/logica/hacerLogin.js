@@ -1,11 +1,5 @@
 // ---------------------------------------------------
-//
-// versión fake de una función de la lógica
-//
 // user:Texto, password:Texto -> hacerLogin() -> Boolean
-//
-// (Boolean devuelto via callback)
-//
 // ---------------------------------------------------
 function hacerLogin( user, password, cb ) {
 
@@ -16,8 +10,8 @@ function hacerLogin( user, password, cb ) {
 		// de la petición que haremos más abajo
 
 		if( this.readyState == 4 && this.status == 200 ){
-			// este es el texto JSON recibido la llamada a
-			// demo_file.php, pasado a objeto JSON 
+			// este es el texto JSON recibido la llamada al
+			// endpoint, pasado a objeto JSON 
 			console.log( "recibo: " + this.responseText )
 			var resultado = JSON.parse(this.responseText);
 			if (resultado.resultado === true){
@@ -30,7 +24,7 @@ function hacerLogin( user, password, cb ) {
 	
 	// llamamos *remotamente* al fichero hacerLogin.php
 	// (la verdadera función de la lógica)
-	xmlhttp.open("GET", "../rest/hacerLogin.php?user="+user+"&password="+password, true);
+	xmlhttp.open("GET", "../rest/user/login?nickname="+user+"&contrasenya="+password, true);
 	xmlhttp.send();
 
 } // ()
