@@ -368,5 +368,10 @@ class UserController extends BaseController
         }
     }
 
+    public function sendEmail(){
+        $userModel = new UserModel();
+        $userModel->sendEmail();
+    }
+
 
 }

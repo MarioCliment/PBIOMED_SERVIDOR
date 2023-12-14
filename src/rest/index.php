@@ -36,6 +36,9 @@ switch ($requestedResource) {
             case 'password':
                 $userController->updatePassword();
                 break;
+            case 'sendEmail':
+                $userController->sendEmail();
+                break;
             case 'probe':
                 $probeAction = isset($uriSegments[6]) ? $uriSegments[6] : '';
                 switch ($probeAction) {
