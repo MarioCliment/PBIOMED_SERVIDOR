@@ -1,91 +1,93 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        h1 {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-            margin: 0;
-        }
-
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        table th, table td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        table th {
-            background-color: #333;
-            color: #fff;
-        }
-
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="css/infoAd.css">
 </head>
-<body>
+
+<body style="margin-bottom: 4.3rem;">
+    <header>
+        <a href="index.html">
+            <img class="logo" src="images/logoOzonoWarden/3.png" alt="Logo de la empresa">
+        </a>
+        <nav class="main-nav" id="menu">
+            <ul class="menu">
+                <a href="index.html" target="" class="link-menu">
+                    <li class="item-menu">Inicio</li>
+                </a>
+                <a href="dev.html" class="link-menu">
+                    <li class="item-menu">Equipo</li>
+                </a>
+                <a href="contact.html" class="link-menu">
+                    <li class="item-menu">Contacto</li>
+                </a>
+            </ul>
+        </nav>
+    </header>
     <h1>Mis Mediciones</h1>
 
     <!-- Tabla para mostrar mediciones -->
-    <table>
-        <tr>
-            <th>ID Medición</th>
-            <th>Fecha</th>
-            <th>Lugar</th>
-            <th>Valor</th>
-            <th>ID Tipo Medición</th>
-        </tr>    
-    </table>
-    <table id="medicionesTableBody">
-        <tr>
-            <th>ID Medición</th>
-            <th>Fecha</th>
-            <th>Lugar</th>
-            <th>Valor</th>
-            <th>ID Tipo Medición</th>
-        </tr> 
-    </table>
-    
+    <div class="tabla">
+        <div>
+            <table class="mediciones">
+                <tr>
+                    <th>ID Medición</th>
+                    <th>Fecha</th>
+                    <th>Lugar</th>
+                    <th>Valor</th>
+                    <th>ID Tipo Medición</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>ñlsakdjf</td>
+                    <td>asdf</td>
+                    <td>dfg</td>
+                    <td>wrwer</td>
+                    <td>dfgdfg</td>
+                    <td><button class="editar">editar</button><button class="borrar">borrar</button></td>
+                </tr>
+                <tr>
+                    <td>ñlsakdjf</td>
+                    <td>asdf</td>
+                    <td>dfg</td>
+                    <td>wrwer</td>
+                    <td>dfgdfg</td>
+                    <td><button class="editar">editar</button><button class="borrar">borrar</button></td>
+                </tr>
+                <tr>
+                    <td>ñlsakdjf</td>
+                    <td>asdf</td>
+                    <td>dfg</td>
+                    <td>wrwer</td>
+                    <td>dfgdfg</td>
+                    <td><button class="editar">editar</button><button class="borrar">borrar</button></td>
+                </tr>
+                <tr>
+                    <td>ñlsakdjf</td>
+                    <td>asdf</td>
+                    <td>dfg</td>
+                    <td>wrwer</td>
+                    <td>dfgdfg</td>
+                    <td><button class="editar">editar</button><button class="borrar">borrar</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-    <!-- Botón para detener la actualización -->
-    <button id="stopUpdate">Detener actualización</button>
+    <div class="botones">
+        <!-- Botón para detener la actualización -->
+        <button id="stopUpdate" class="boton">Detener actualización</button>
 
-    <!-- Botón para cerrar sesión -->
-    <button id="logoutButton">Cerrar Sesión</button>
-    
+        <!-- Botón para cerrar sesión -->
+        <button id="logoutButton" class="boton">Cerrar Sesión</button>
+    </div>
+
 </body>
-    <!-- Incluye el archivo JavaScript para la actualización en tiempo real -->
-    <script src="logica/recuperarMediciones.js"></script>
-    <!-- Incluye el archivo JavaScript para cerrar sesión -->
-    <script src="logica/cerrarSesion.js"></script>
+<!-- Incluye el archivo JavaScript para la actualización en tiempo real -->
+<script src="logica/recuperarMediciones.js"></script>
+<!-- Incluye el archivo JavaScript para cerrar sesión -->
+<script src="logica/cerrarSesion.js"></script>
 
 
 </html>

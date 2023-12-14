@@ -1,59 +1,275 @@
-:root{
-    --primary-color:#024FC9;
-    --secondary-color: #03C2F1;
-}
-
-
-*{
-    font-family: roboto;
-}
-
-html,body{
+html,
+body {
     margin: 0;
 }
 
-h1,h2{
+body {
+    font-family: 'roboto';
+    background: linear-gradient(159deg, rgba(2, 155, 228, 0.70) 5.06%, rgba(2, 118, 215, 0.70) 38.08%, rgba(2, 79, 201, 0.70) 66.46%, rgba(2, 28, 183, 0.70)100%);
+}
+
+.gas {
+    margin-top: 7rem;
+}
+
+.trozoB {
+    color: rgb(241, 239, 239);
+    margin: 0 2rem 0 2rem;
+}
+
+.tituloGas {
+    width: 100%;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../images/cielo2.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.causas,
+.efectos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.causas>div,
+.efectos>div {
+    flex: 1;
+    padding: 0 1rem 0 1rem;
+    min-width: 15rem;
+    max-width: 30rem;
+    text-align: justify;
+}
+
+.efectos>div {
     text-align: center;
 }
 
-h1{
-    margin: 2rem;
-    color: var(--primary-color);
-    text-shadow: 1px 2px black, 0 0 2em var(--primary-color), 0 0 1.2em var(--primary-color);
+.efectos>div>img {
+    width: 45%;
+    filter: invert();
+    background-color: rgba(253, 227, 72, 0.70);
+    padding: 2rem;
+    border-radius: 4rem 2rem 4rem 2rem;
 }
 
-h2{
-    color: var(--secondary-color);
-}
 
-.trozo{
-    width: 100%;
+.valoresLimites {
+    background-color: white;
+    padding: .5rem 2rem .5rem 2rem;
     display: flex;
     align-items: center;
-    background: rgb(255,255,255);
-    background: radial-gradient(circle, rgba(255,255,255,1) 20%, rgb(186, 255, 241) 100%);
+    flex-wrap: wrap;
 }
 
-.imagen{
-    height: 50%; 
-    margin: 2rem 1rem 2rem 1rem;
-    flex: 1;
+.textoPPM {
+    flex: 6;
+    min-width: 20rem;
 }
 
-.imagen > img{
-    object-fit: cover;
+.valorPPM {
+    flex: 4;
+    font-size: 5rem;
+    text-align: center;
+}
+
+.valorPPM>p {
+    margin: 0 0 0 1rem;
+    color: rgba(2, 155, 228, 0.70);
+}
+
+
+.consejos {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.consejosTexto {
+    min-width: 25rem;
+    flex: 5;
+}
+
+.consejosFoto {
+    text-align: center;
+    flex: 5;
+}
+
+.consejosTexto>div {
+    display: flex;
+    align-items: center;
+}
+
+.consejosTexto>div>img {
+    padding: .5rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+    background-color: aliceblue;
+}
+
+.consejosFoto>img {
+    min-width: 20rem;
+    max-width: 20rem;
+}
+
+/* TITULOS */
+
+h1 {
+    text-align: center;
+    color: #fff;
+    margin-top: 7rem;
+}
+
+/* TABLAS */
+
+.tabla {
     width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tabla>div {
+    padding: 2rem 0 4rem 0;
+    background-color: #ffffff;
+    border-radius: 2rem;
+    width: fit-content;
+    width: 80%;
+    max-width: 90rem;
+
+}
+
+table {
+    width: 100%;
+    background-color: #ffffff;
+    text-align: center;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-right: 2px solid black;
+    height: 3.5rem;
+}
+
+td:last-child,
+th:last-child {
+    border-right: 0;
+}
+
+tr:nth-child(even) {
+    background-color: #dce1f7;
+}
+
+/* BOTONES */
+
+button {
+    border-radius: .5rem;
+    cursor: pointer;
+}
+
+.boton {
+    padding: .8rem 1.5rem .8rem 1.5rem;
+    margin: 0 1rem;
+}
+
+table button {
+    width: 4rem;
+    height: 2rem;
+    margin: 2px;
+}
+
+button:hover{
+    background-color: #dce1f7;
+    color: black;
+}
+
+.borrar {
+    background-color: rgb(221, 57, 57);
+    color: white;
+}
+
+.editar {
+    background-color: rgba(2, 28, 183, 0.70);
+    color: white;
+}
+
+
+.botones{
+    display: flex;
+    justify-content: center;
+    margin: 3rem;
+
+}
+
+header {
+    z-index: 3;
+    background-color: aliceblue;
+    position: fixed;
+    height: 7rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    top: 0;
+}
+
+.logo {
     height: 100%;
-
 }
 
-.derecha{
-    flex: 1;
-    margin: 2rem 2rem 2rem 1rem;
+
+
+.menu {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
-.izquierda{
-    flex: 1;
-    margin: 2rem 1rem 2rem 2rem;
+.menu a {
+    text-decoration: none;
+    color: white;
 }
 
+.item-menu {
+    text-decoration: none;
+    list-style: none;
+    background-color: rgba(2, 28, 183, 0.70);
+    padding: 2rem;
+    text-transform: uppercase;
+}
+
+.item-menu:hover {
+    background-color: rgba(2, 155, 228, 0.70);
+    color: black;
+}
+
+.contenido {
+    margin: 7.2rem 4rem;
+    
+}
+
+.contenido>div {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.contenido label {
+    color: white;
+    margin: 1rem 0;
+    font-weight: 800;
+    font-size: large;
+}
+
+.contenido input {
+    border: 0;
+    border-bottom: 1px white solid;
+    background-color: transparent;
+    color: white
+}
