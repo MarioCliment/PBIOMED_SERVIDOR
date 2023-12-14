@@ -231,6 +231,9 @@ class UserController extends BaseController
         }
     }
 
+
+    //Añadir lo de la contraseña
+
     public function updateThisUser()
     {
         $strErrorDesc = '';
