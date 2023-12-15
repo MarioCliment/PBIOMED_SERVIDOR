@@ -33,6 +33,15 @@ switch ($requestedResource) {
             case 'edit':
                 $userController->updateThisUser();
                 break;
+            case 'password':
+                $userController->updatePassword();
+                break;
+            case 'sendEmail':
+                $userController->sendEmail();
+                break;
+            case 'verify':
+                $userController->verifyThisUser();
+                break;
             case 'probe':
                 $probeAction = isset($uriSegments[6]) ? $uriSegments[6] : '';
                 switch ($probeAction) {
@@ -105,22 +114,24 @@ switch ($requestedResource) {
         }
         break;
     case 'measure':
-        $measureAction = isset($uriSegments[3]) ? $uriSegments[3] : '';
+        require "controller/api/ModelController.php";
+        $measureController = new MeasureController;
+        $measureAction = isset($uriSegments[5]) ? $uriSegments[5] : '';
 
         switch ($measureAction) {
                 case 'all':
-                    $allMeasureAction = isset($uriSegments[4]) ? $uriSegments[4] : '';
                     switch ($allMeasureAction) {
+                        case 'data':
+                            $measureController->getAllMeasures()();
+                            break;
                         case 'place':
-                            $userController->measureAllPlaceAction();
+                            $measureController->measureMedianPlaceAction();
                             break;
                         case 'time':
-                            $userController->measureAllTimeAction();
-                            break;
-                        // Agrega más casos según sea necesario
-                        default:
-                            $userController->measureAllAction();
+                            $measureController->measureMedianPlaceAction();
+                            break; 
                     }
+                    
                     break;
                 case 'median':
                     $medianMeasureAction = isset($uriSegments[4]) ? $uriSegments[4] : '';

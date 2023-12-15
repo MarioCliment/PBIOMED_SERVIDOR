@@ -94,12 +94,21 @@ class UserController extends BaseController
                 $this->objetoResultado = new stdClass;
 
                 $email = $data->email;
+                $result = $userModel->sendEmail($email);
                 $contrasenya = $data->contrasenya;  
                 $nombreApellidos = $data->nombreApellidos;  
                 $nickname = $data->nickname; 
+                $codigo = $result->codigo;
+                $this->objetoResultado->enviado = $result->enviado;
 
-                $user = $userModel->addUser($email, $contrasenya, $nombreApellidos, $nickname);
+                if(!$result->enviado){
+                    $strErrorDesc = 'Email not sent';
+                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error'; 
+                }
+
+                $user = $userModel->addUser($email, $contrasenya, $nombreApellidos, $nickname, "no", $codigo);
                 $this->objetoResultado->resultado = $user;
+                
                 $responseData = json_encode($this->objetoResultado);
 
             } catch (Error $e) {
@@ -230,6 +239,9 @@ class UserController extends BaseController
             );
         }
     }
+
+
+    //Añadir lo de la contraseña
 
     public function updateThisUser()
     {
@@ -364,6 +376,56 @@ class UserController extends BaseController
             );
         }
     }
+
+    public function verifyThisUser()
+    {
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $data = json_decode(file_get_contents('php://input'));
+        if (strtoupper($requestMethod) == 'PUT') {
+            try {
+                
+                $userModel = new UserModel();
+                $this->objetoResultado = new stdClass;
+
+                $email = $data->email;
+                $codigo = $data->codigo;
+
+                $response = $userModel->verifyThisUser($email, $codigo);
+
+                $this->objetoResultado->resultado=$response;
+                
+                $responseData = json_encode($response);
+
+            } catch (Error $e) {
+                $strErrorDesc = $e->getMessage().'Something went wrong!';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+
+            
+        
+        
+        // send output 
+        if (!$strErrorDesc) {
+            echo 'TODO CORRECTO  ya puedes Iniciar sesion </a>';
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK'),
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+
+
+    
 
 
 }

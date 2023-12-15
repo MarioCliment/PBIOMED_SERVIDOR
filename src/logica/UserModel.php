@@ -28,8 +28,8 @@ class UserModel extends Database
     //-----------------------------------------------------------------------
     // string, string, string, string -> addUser() -> ToF
     //-----------------------------------------------------------------------
-    public function addUser($email, $contrasenya, $nombreApellidos, $nickname){
-        return $this->insert("INSERT INTO usuario (email, contrasenya, rol, nombreApellidos, nickname) VALUES ('$email', '$contrasenya', 'usuario', '$nombreApellidos', '$nickname')");
+    public function addUser($email, $contrasenya, $nombreApellidos, $nickname, $confirmado, $codigo){
+        return $this->insert("INSERT INTO usuario (email, contrasenya, rol, nombreApellidos, nickname, confirmado, codigo) VALUES ('$email', '$contrasenya', 'usuario', '$nombreApellidos', '$nickname', '$confirmado', '$codigo')");
     }
 
     //Funcion para verificar el login un usuario
@@ -114,6 +114,76 @@ class UserModel extends Database
     //-----------------------------------------------------------------------
     private function returnEmail($userData){
         return $userData[0]["email"];
+    }
+
+    public function sendEmail($email){
+        // Varios destinatarios
+        $para  = $email . ', '; // atención a la coma
+        //$para .= 'example@example.com';
+
+        // título
+        $título = 'Gracias por registrarte';
+
+        //aleatoria
+        $codigo = rand(1000,9999);
+
+        //CAMBIAR IP PARA USOS
+        $ipserver = "192.168.1.148:80"; //CASA GRASA
+        // mensaje
+        $mensaje = '
+        <html>
+        <head>
+            <meta charset="UTF8" />
+        <title>Recordatorio de cumpleaños para Agosto</title>
+        </head>
+        <body>
+        <p>TU CÓDIGO DE VERIFICACIÓN ES : </p>
+        <h2>'.$codigo.'</h2>
+        <p> 
+            <a 
+            href="http://'.$ipserver.'/PBIOMED_SERVIDOR/src/ux/verification/confirmation.php?email='.$email.'">
+            VERIFICA TU CUENTA </a> 
+        </p>
+        
+        
+        </body>
+        </html>
+        ';
+
+        // Para enviar un correo HTML, debe establecerse la cabecera Content-type
+        $cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+        $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $cabeceras .= 'From: ozonewardencontact@gmail.com' . "\r\n";
+        /*
+        // Cabeceras adicionales
+        $cabeceras .= 'To: Mary <mary@example.com>, Kelly <kelly@example.com>' . "\r\n";
+        $cabeceras .= 'From: Recordatorio <cumples@example.com>' . "\r\n";
+        $cabeceras .= 'Cc: birthdayarchive@example.com' . "\r\n";
+        $cabeceras .= 'Bcc: birthdaycheck@example.com' . "\r\n";*/
+
+        $this->objetoResultado = new stdClass;
+
+        // Enviarlo
+        $this->objetoResultado->enviado=false;
+        if(mail($para, $título, $mensaje, $cabeceras)){
+            $this->objetoResultado->enviado=true;
+        }
+        $this->objetoResultado->codigo=$codigo;
+
+        return $this->objetoResultado;
+    }
+
+    //-----------------------------------------------------------------------
+    // string, double -> verifyThisUser() -> ToF
+    //-----------------------------------------------------------------------
+    public function verifyThisUser($email, $codigo){
+        $result =  $this->update("UPDATE usuario SET confirmado = 'si' WHERE email = '$email' AND codigo='$codigo'");
+
+        if ($result == true){
+            return true;
+        }
+
+        return false;
     }
 
 }
