@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <script src="mapResources/heatmap.js"></script>
+    <script src="mapResources/leaflet-heatmap.js"></script>
+    <script src="mapResources/leaflet-idw.js"></script>
+    <script src="logica/recuperarTotalMediciones.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Thin:wght@100&display=swap" rel="stylesheet">
+    
+</head>
+<header class="header" role="banner" id="header">
+    <span class="general-nav-bar">
+        <div class="logo-nav-bar">
+            <!--Logo here-->
+            <a class="logoBox" href="index.html">
+                <img class="OzoneWardenLogo" src="images/OzoneWardenLogo.png" alt="Ozone Warden Logo">
+            </a>
+        </div>
+        <div class="nav-bar">
+            <!--menu button-->
+            <button class="iconBtn" id="menuBtn">
+                <!--hamburger menu--->
+                <img class="menu-icon" src="images/icons/list.svg" alt="menu icon">
+            </button>
+        </div>
+    </span>
+    <!-- Menu-->
+    <nav class="main-nav" id="menu">
+        <!--Menu content-->
+        <ul class="menu" >
+            <li class="item-menu hover"><a href="index.html" target="" class="link-menu">Inicio</a></li>
+            <li class="item-menu hover"><a href="dev.html" class="link-menu">Equipo</a></li>
+            <li class="item-menu hover"><a href="contact.html" class="link-menu">Contacto</a></li>
+            <li class="item-menu hover"><a href="Aplicacion.html" class="link-menu">Iniciar Sesión</a></li>
+            <li class="item-menu hover"><a href="editarUsuario.html" class="link-menu">Editar Usuario</a></li>
+            <li class="item-menu hover"><a href="mapas.html" class="link-menu">Mapa</a></li>
+            <!--Menu content end-->
+        </ul>
+    </nav>
+    <!--Menu end-->
+</header>
+<body>
+    <button id="submitButton" onclick="restaurar()">normal</button>
+    <div id="map"></div>
+    
+
+    <style>
+        #map {
+            height: 800px;
+            width: 100%;
+        }
+
+        #textInputContainer {
+            text-align: center;
+            padding: 10px;
+        }
+
+    </style>
+
+    <script>
+       // don't forget to include leaflet-heatmap.js
+
+//Hola leopoldo del futuro esta es la guia de manejar leaflet heatmap
+//leaflet heatmap requiere de index.js,heatmap.js y leaflet-heatmap.js
+//los puntos los pones mediante testData
+//los colores con gradient
+//cambias el tamaño del ciruclo con radius *NO LO RECOMIENDO PORQUE AHORA ESTA BIEN*
+//se puede ajustar la opacidad maxima y opacidad minima con maxOpacity y minOpacity respectivamente
+//las propiedades center y zoom estan ajustadas para playa de gandia
+
+
+var testData = {
+  data: [
+  {lat: 38.99483939673766, lng: -0.16318677844987534, count: 1},
+  {lat: 38.996218181059106, lng: -0.1660760830006123, count: 3},
+  {lat: 38.995431, lng: -0.164549, count: 1},
+  {lat: 38.994652, lng: -0.162990, count: 1},
+  {lat: 38.995978, lng: -0.165348, count: 1},
+  {lat: 38.996896, lng: -0.167621, count: 3},
+  {lat: 38.995764, lng: -0.165960, count: 1},
+  {lat: 38.996587, lng: -0.167020, count: 1},
+  {lat: 38.994422, lng: -0.162377, count: 1},
+  {lat: 38.995197, lng: -0.164090, count: 1},
+  {lat: 38.997123, lng: -0.168212, count: 3}
+]
+};
+
+var baseLayer = L.tileLayer(
+  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution: '...',
+    maxZoom: 18
+  }
+);
+var cfg = {
+  "radius": 0.001,
+  "scaleRadius": true,
+  "useLocalExtrema": true,
+  latField: 'lat',
+  lngField: 'lng',
+  valueField: 'count'
+  ,
+  gradient: {
+    '.5': 'green',
+    '.8': 'yellow',
+    '.95': 'red'
+  },
+};
+var heatmapLayer = new HeatmapOverlay(cfg);
+var map = new L.Map('map', {
+  center: new L.LatLng(38.99592122004998, -0.16600370993846877),
+  zoom: 19,
+  layers: [baseLayer, heatmapLayer]
+});
+heatmapLayer.setData(testData);
+
+
+//meter los datos del servidor... SALVAME DONALD TRUMP SALVAME!
+            //transforma los estupidos datos de los cojones en algo usable para chad mapa
+            function transformarDatos(jsonData) {
+                  return {
+                    data: jsonData.map(item => {
+                      const [lat, lng] = item.lugar.split(',').map(parseFloat);
+                      return { lat, lng, count: item.valor };
+                    })
+                  };
+                }
+            //ASI ES MARIO CLIMENT YO METO TUS ESTUPIDAS FUNCIONES EN MI PAGINA YO SOY MEJOR MAYRO YO!!!
+            function obtenerMediciones() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        try {
+                            console.log("Recibo: " + this.responseText);
+                            var medicionesData = JSON.parse(this.responseText);
+                            heatmapLayer.setData(transformarDatos(jsonData));
+                        } catch (error) {
+                            console.error("Error al analizar JSON:", error);
+                        }
+                    }
+                };
+
+                xmlhttp.open("GET", "../rest/measure/all/data?limit=20", true);
+                xmlhttp.send();
+            }
+    </script>
+    <script>
+        function restaurar(){
+         heatmapLayer.setData(testData);
+        }
+        function high() {
+          var testDatanuevo = filtro(testData,3);
+          heatmapLayer.setData(testDatanuevo);
+        }
+        function filtro(datos,valor) {
+        var datosFiltrados = datos.data.filter(function(elemento) {
+          return elemento.count >= valor;
+        });
+        return {
+          data: datosFiltrados
+        };
+        }
+      
+          
+          
+
+
+
+    </script>
+   <script>
+    //ACCEDER A LA ESTACION
+    //Accede al get que se envia a informacion sobre la estacion de madrid
+    //por alguna demoniaca razon no envia los datos sino un link a los datos y por eso existe fetchearOzono
+    //quiero suicidarme... pero las ganas de matar al creador de aemet me mantiene vivo
+    var data = null;
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        var jsonData = JSON.parse(this.responseText);
+        var datosUrl = jsonData.datos;
+        console.log(datosUrl)
+        fetchearOzono(datosUrl);
+      }
+    });
+
+    xhr.open("GET", "https://opendata.aemet.es/opendata/api/red/especial/perfilozono/estacion/peninsula/?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2tvaGFzdGVyQGdtYWlsLmNvbSIsImp0aSI6ImFjMzdmMjdhLTk4NGQtNDlhOS04MmNmLTIwZjU5MWM5YTA3MyIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNzAyNTc3NDcyLCJ1c2VySWQiOiJhYzM3ZjI3YS05ODRkLTQ5YTktODJjZi0yMGY1OTFjOWEwNzMiLCJyb2xlIjoiIn0.K7oFsg9_p9NnqgTF_91PUB0988dL1M53NCmAqNaMKQ4");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.send(data);
+    //FUNCION QUE COGE EL URL AGARRADO POR EL GET E INTENTA SACAR EL VALOR INTEGRATEDOZONE
+    // Y EL VALOR RESIDUAL OZONE.. de momento solo saca el integrated ozone
+    // luego pone el integrated ozone en un marker en madrid
+
+    function fetchearOzono(url){
+      fetch(url)
+      .then(response => response.text())
+      .then(html => {
+        // Log the HTML data to the console
+
+                
+            
+
+        // Use regular expressions to find the desired numbers
+        var integratedOzoneMatch = html.match(/Integrated Ozone \[DU\]:\s*([\d.]+)/);
+        var residualOzoneMatch = html.match(/Residual Ozone \[DU\]:\s*([\d.]+)/);
+
+        // Check if matches were found and extract the numbers
+        if (integratedOzoneMatch) {
+            var integratedOzoneValue = parseFloat(integratedOzoneMatch[1]);
+            console.log("Integrated Ozone:", integratedOzoneValue);
+            var marker = L.marker([40.42697795042544, -3.698073083157613]).addTo(map);
+            marker.bindPopup("Valor del ozono = " + integratedOzoneValue.toString());
+        }
+
+        if (residualOzoneMatch) {
+            var residualOzoneValue = parseFloat(residualOzoneMatch[1]);
+            console.log("Residual Ozone:", residualOzoneValue);
+        }
+              })
+              .catch(error => console.error('Error fetching data:', error));
+            }
+   
+   
+  </script>
+   </script>
+   
+</body>
+</html>
