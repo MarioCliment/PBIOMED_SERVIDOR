@@ -14,8 +14,11 @@ function hacerLogin( user, password, cb ) {
 			// endpoint, pasado a objeto JSON 
 			console.log( "recibo: " + this.responseText )
 			var resultado = JSON.parse(this.responseText);
-			if (resultado.resultado === true){
+			if (resultado.resultado === true && resultado.rol === "usuario"){
 				window.location.href = '../ux/Mediciones.html'
+			}
+			else if(resultado.resultado === true && resultado.rol === "admin"){
+				window.location.href = '../ux/Nodos.html'
 			}
 
 			cb( resultado ) // devuelvo el resultado

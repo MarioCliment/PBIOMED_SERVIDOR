@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/infoAd.css">
+</head>
+
+<body style="margin-bottom: 4.3rem;">
+    <header>
+        <!-- ... (código existente) ... -->
+    </header>
+    <h1>Lista de Usuarios</h1>
+
+    <!-- Tabla para mostrar información de usuarios -->
+    <div class="tabla">
+        <div>
+            <table class="mediciones">
+                <tr>
+                    <th>Email</th>
+                    <th>Última Fecha de Envío</th>
+                    <th>Nombre y Apellidos</th>
+                </tr>
+                <!-- Aquí se cargarán los usuarios dinámicamente -->
+            </table>
+            <table id="usuariosTable" class="mediciones">
+                <tr>
+                    <th>Email</th>
+                    <th>Última Fecha de Envío</th>
+                    <th>Nombre y Apellidos</th>
+                </tr>
+                <!-- Aquí se cargarán los usuarios dinámicamente -->
+            </table>
+        </div>
+    </div>
+
+    <div class="botones">
+        <!-- Botón para detener la actualización -->
+        <button id="stopUpdate" class="boton">Detener actualización</button>
+
+        <!-- Botón para cerrar sesión -->
+        <button id="logoutButton" class="boton">Cerrar Sesión</button>
+    </div>
+
+    <!-- Incluye el archivo JavaScript para la actualización en tiempo real -->
+    <script src="logica/recuperarUsuarios.js"></script>
+    <!-- Incluye el archivo JavaScript para cerrar sesión -->
+    <script src="logica/cerrarSesion.js"></script>
+</body>
+
+</html>

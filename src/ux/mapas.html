@@ -11,8 +11,6 @@
     crossorigin=""></script>
     <script src="mapResources/heatmap.js"></script>
     <script src="mapResources/leaflet-heatmap.js"></script>
-    <script src="mapResources/leaflet-idw.js"></script>
-    <script src="logica/recuperarTotalMediciones.js"></script>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -109,12 +107,12 @@ var cfg = {
   "useLocalExtrema": true,
   latField: 'lat',
   lngField: 'lng',
-  valueField: 'count'
-  ,
+  valueField: 'count',
+  minOpacity:0.1,
   gradient: {
-    '.5': 'green',
-    '.8': 'yellow',
-    '.95': 'red'
+    '.3': 'green',
+    '.5': 'yellow',
+    '.6': 'red'
   },
 };
 var heatmapLayer = new HeatmapOverlay(cfg);
@@ -124,36 +122,86 @@ var map = new L.Map('map', {
   layers: [baseLayer, heatmapLayer]
 });
 heatmapLayer.setData(testData);
+update();
 
 
 //meter los datos del servidor... SALVAME DONALD TRUMP SALVAME!
             //transforma los estupidos datos de los cojones en algo usable para chad mapa
-            function transformarDatos(jsonData) {
-                  return {
-                    data: jsonData.map(item => {
-                      const [lat, lng] = item.lugar.split(',').map(parseFloat);
-                      return { lat, lng, count: item.valor };
-                    })
-                  };
-                }
-            //ASI ES MARIO CLIMENT YO METO TUS ESTUPIDAS FUNCIONES EN MI PAGINA YO SOY MEJOR MAYRO YO!!!
-            function obtenerMediciones() {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        try {
-                            console.log("Recibo: " + this.responseText);
-                            var medicionesData = JSON.parse(this.responseText);
-                            heatmapLayer.setData(transformarDatos(jsonData));
-                        } catch (error) {
-                            console.error("Error al analizar JSON:", error);
-                        }
-                    }
-                };
+            function transformarDatos(lugar) {
+              // Dividir el string en las coordenadas usando la coma como separador
+              var coordenadasArray = lugar.split(',');
 
-                xmlhttp.open("GET", "../rest/measure/all/data?limit=20", true);
-                xmlhttp.send();
+              // Obtener las coordenadas en variables separadas
+              var lat = parseFloat(coordenadasArray[0]);
+              var lng = parseFloat(coordenadasArray[1]);
+
+              console.log("LATITUD: " + lat);
+              console.log("LONGITUD: " + lng);
+                  return {
+                      lat, 
+                      lng
+                  };
+
+            };
+            
+            //ASI ES MARIO CLIMENT YO METO TUS ESTUPIDAS FUNCIONES EN MI PAGINA YO SOY MEJOR MAYRO YO!!!
+            function obtenerMediciones(cb) {
+              var xmlhttp = new XMLHttpRequest();
+              xmlhttp.onreadystatechange = function () {
+                  if (this.readyState == 4 && this.status == 200) {
+                      try {
+                          console.log("Recibo: " + this.responseText);
+                          var medicionesData = JSON.parse(this.responseText);
+                          console.log("Parse result: " + medicionesData);
+                          cb(medicionesData);
+                      } catch (error) {
+                          console.error("Error al analizar JSON:", error);
+                      }
+                  }
+              };
+
+              xmlhttp.open("GET", "../rest/measure/all/data", true);
+              xmlhttp.send();
             }
+            
+    function update() {
+        obtenerMediciones(function (mediciones) {
+
+          var jsonData = {
+            data: []
+          };
+
+          mediciones.forEach((medicion) => {
+            console.log("ITERANDO: " + medicion.idMedicion);
+            console.log("LUGAR: " + medicion.lugar);
+            console.log("VALOR: " + medicion.valor);
+
+            lugar=transformarDatos(medicion.lugar)
+            var dataEntry = {
+              lat: lugar.lat, 
+              lng: lugar.lng,
+              count: medicion.valor
+            };
+            var dataEntry2 = {
+              lat:38.995831, 
+              lng:-0.158177,
+              count:500
+            }
+            jsonData.data.push(dataEntry);
+            jsonData.data.push(dataEntry2);
+          });
+            
+          heatmapLayer.setData(jsonData);
+
+        });
+    }
+
+
+
+
+
+
+
     </script>
     <script>
         function restaurar(){

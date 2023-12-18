@@ -6,6 +6,7 @@ if(isset($_GET['email'] )){
 
 //CAMBIAR IP PARA USOS
 $ipserver = "192.168.1.148:80"; //CASA GRASA
+//192.168.10.7 MOVIL MARIO
 
 ?>
 
@@ -51,7 +52,7 @@ $ipserver = "192.168.1.148:80"; //CASA GRASA
         };
 
         // Configurar la solicitud AJAX con fetch
-        fetch('http://192.168.1.148:80/PBIOMED_SERVIDOR/src/rest/user/verify', {
+        fetch('http://192.168.10.7:80/PBIOMED_SERVIDOR/src/rest/user/verify', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

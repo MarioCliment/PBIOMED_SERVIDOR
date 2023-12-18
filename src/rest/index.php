@@ -42,6 +42,9 @@ switch ($requestedResource) {
             case 'verify':
                 $userController->verifyThisUser();
                 break;
+            case 'nodes':
+                $userController->getAllUserDetails();
+                break;
             case 'probe':
                 $probeAction = isset($uriSegments[6]) ? $uriSegments[6] : '';
                 switch ($probeAction) {
@@ -114,12 +117,13 @@ switch ($requestedResource) {
         }
         break;
     case 'measure':
-        require "controller/api/ModelController.php";
+        require "controller/api/MeasureController.php";
         $measureController = new MeasureController;
         $measureAction = isset($uriSegments[5]) ? $uriSegments[5] : '';
 
         switch ($measureAction) {
                 case 'all':
+                    $allMeasureAction = isset($uriSegments[6]) ? $uriSegments[6] : '';
                     switch ($allMeasureAction) {
                         case 'data':
                             $measureController->getAllMeasures()();

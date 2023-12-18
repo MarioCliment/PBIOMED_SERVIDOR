@@ -39,11 +39,21 @@ class UserModel extends Database
     public function loginUser($nickname, $contrasenya) {
         $result =  $this->selectFetch("SELECT * FROM usuario WHERE nickname = '$nickname' AND contrasenya = '$contrasenya'");
 
-        if ($result != null){
-            return true;
+        $user = $this->select("SELECT * FROM usuario WHERE nickname = '$nickname'");
+
+        $this->objetoResultado = new stdClass;
+
+        $this->objetoResultado->rol = $user[0]["rol"];
+        
+        $response = false;
+
+        if ($result != null && $user[0]["confirmado"] == "si"){
+            $response = true;
         }
 
-        return false;
+        $this->objetoResultado->response = $response;
+
+        return  $this->objetoResultado;
     }
 
     //Funcion para cerrar la sesion
@@ -128,7 +138,10 @@ class UserModel extends Database
         $codigo = rand(1000,9999);
 
         //CAMBIAR IP PARA USOS
-        $ipserver = "192.168.1.148:80"; //CASA GRASA
+        //$ipserver = "192.168.1.148:80"; //CASA GRASA
+        $ipserver = "192.168.10.7:80"; //MOVIL MAYRO
+  
+
         // mensaje
         $mensaje = '
         <html>
@@ -185,6 +198,66 @@ class UserModel extends Database
 
         return false;
     }
+
+    //Funcion para obtener los detalles de todos los usuarios
+    //-----------------------------------------------------------------------
+    // -> getAllUserDetails() -> array{stdClass}
+    //-----------------------------------------------------------------------
+    public function getAllUserDetails() {
+        $users = $this->getAllUsers(1000);
+
+        $allUserDetails = [];
+
+        foreach ($users as $user) {
+            $email = $user["email"];
+            $nombreApellidos = $user["nombreApellidos"];
+
+            // Obtener la última fecha de envío de datos
+            $ultimaFechaEnvio = $this->getLastDataSendDate($email);
+
+            $userDetails = new stdClass;
+            $userDetails->email = $email;
+            $userDetails->nombreApellidos = $nombreApellidos;
+            $userDetails->ultimaFechaEnvio = $ultimaFechaEnvio;
+
+            // Verificar que la fecha no sea null antes de agregar los detalles del usuario
+            if ($ultimaFechaEnvio !== null) {
+                $userDetails = new stdClass;
+                $userDetails->email = $email;
+                $userDetails->nombreApellidos = $nombreApellidos;
+                $userDetails->ultimaFechaEnvio = $ultimaFechaEnvio;
+
+                $allUserDetails[] = $userDetails;
+            }
+
+        }
+
+        return $allUserDetails;
+    }
+
+    // Función para obtener la última fecha de envío de datos de un usuario
+    private function getLastDataSendDate($email) {
+        // Utiliza una única consulta para obtener la última fecha de envío de datos sin límite
+        $result = $this->select("SELECT mediciones.fecha FROM `usuario-medicion`
+                                    JOIN mediciones ON `usuario-medicion`.idMedicion = mediciones.idMedicion 
+                                    WHERE `usuario-medicion`.email = '$email'
+                                    AND `usuario-medicion`.idMedicion IS NOT NULL
+                                    ORDER BY `mediciones`.idMedicion DESC
+                                    LIMIT 1");
+
+        if ($result !== null && !empty($result)) {
+            // Accede a la fecha dentro del array asociativo
+            $ultimaFechaEnvio = $result[0]['fecha'];
+            return $ultimaFechaEnvio;
+        } else {
+            return null;
+        }
+    }
+/*
+    return $this->select("SELECT mediciones.* FROM `usuario-medicion` JOIN mediciones
+        ON `usuario-medicion`.idMedicion = mediciones.idMedicion WHERE `usuario-medicion`.email = '$email' ORDER BY `mediciones`.idMedicion DESC LIMIT ?", ["i", $limit]);
+*/
+
 
 }
 ?>

@@ -1,9 +1,9 @@
-const medicionesTable = document.getElementById('medicionesTable');
+const medicionesTable = document.getElementById('usuariosTable');
 const stopUpdateButton = document.getElementById('stopUpdate');
 
 // Verifica si los elementos HTML existen
 if (!medicionesTable) {
-    console.error("Elemento 'medicionesTable' no encontrado.");
+    console.error("Elemento 'usuariosTable' no encontrado.");
 } else if (!stopUpdateButton) {
     console.error("Elemento 'stopUpdate' no encontrado.");
 } else {
@@ -24,23 +24,22 @@ if (!medicionesTable) {
             }
         };
 
-        xmlhttp.open("GET", "../rest/user/measure/all/data?limit=20", true);
+        xmlhttp.open("GET", "../rest/user/nodes", true);
         xmlhttp.send();
     }
 
     function updateTable() {
         obtenerMediciones(function (mediciones) {
-            var tableBody = document.getElementById('medicionesTable');
+            var tableBody = document.getElementById('usuariosTable');
             tableBody.innerHTML = ''; // Limpiamos el contenido actual de la tabla
     
             // Iteramos sobre las mediciones y agregamos filas a la tabla
             mediciones.forEach((medicion) => {
                 var newRow = tableBody.insertRow();
-                newRow.innerHTML = `<td>${medicion.idMedicion}</td>
-                                   <td>${medicion.fecha}</td>
-                                   <td>${medicion.lugar}</td>
-                                   <td>${medicion.valor}</td>
-                                   <td>${medicion.idTipoMedicion}</td>`;
+                newRow.innerHTML = `<td>${medicion.email}</td>
+                                   <td>${medicion.ultimaFechaEnvio}</td>
+                                   <td>${medicion.nombreApellidos}</td>`;
+
             });
         });
     }

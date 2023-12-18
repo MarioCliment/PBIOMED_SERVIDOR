@@ -103,11 +103,14 @@ class UserController extends BaseController
 
                 if(!$result->enviado){
                     $strErrorDesc = 'Email not sent';
-                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error'; 
+                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error Email not sent'; 
+                }
+                else{
+                    $user = $userModel->addUser($email, $contrasenya, $nombreApellidos, $nickname, "no", $codigo);
+                    $this->objetoResultado->resultado = $user;
                 }
 
-                $user = $userModel->addUser($email, $contrasenya, $nombreApellidos, $nickname, "no", $codigo);
-                $this->objetoResultado->resultado = $user;
+                
                 
                 $responseData = json_encode($this->objetoResultado);
 
@@ -151,7 +154,7 @@ class UserController extends BaseController
                 $loginResponse = $userModel->loginUser($nickname,$contrasenya);
 
 
-                if ($loginResponse == true) {
+                if ($loginResponse->response == true) {
                     // Iniciar una sesión
                     session_start();
                     // Establecer la sesión de usuario
@@ -159,6 +162,7 @@ class UserController extends BaseController
                 
                     $this->objetoResultado->resultado = true;
                     $this->objetoResultado->nickname = $nickname;
+                    $this->objetoResultado->rol = $loginResponse->rol;
                 
                 } else {
                     $this->objetoResultado->resultado = false;
@@ -419,6 +423,43 @@ class UserController extends BaseController
         } else {
             $this->sendOutput(
                 json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+
+    //Funcion para obtener el email, nombre y apellidos, y la última fecha de envío de datos de todos los usuarios
+    //-----------------------------------------------------------------------
+    // string -> getAllUserDetails() -> array{stdClass}
+    //-----------------------------------------------------------------------
+    public function getAllUserDetails()
+    {
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        if (strtoupper($requestMethod) == 'GET') {
+            try {
+                $userModel = new UserModel();
+                $allUserDetails = $userModel->getAllUserDetails();
+                $responseData = json_encode($allUserDetails);
+            } catch (Error $e) {
+                $strErrorDesc = $e->getMessage() . 'Something went wrong!';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+
+        // send output 
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)),
                 array('Content-Type: application/json', $strErrorHeader)
             );
         }
