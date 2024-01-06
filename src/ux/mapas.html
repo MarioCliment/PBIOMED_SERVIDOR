@@ -2,15 +2,15 @@
 <html>
 <head>
     <title>Mapas</title>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-    <script src="mapResources/heatmap.js"></script>
-    <script src="mapResources/leaflet-heatmap.js"></script>
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     <script type="text/javascript" src="./mapResources/webgl-heatmap.js"></script>
+     <script type="text/javascript" src="./mapResources/leaflet-webgl-heatmap.js"></script>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -18,6 +18,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Thin:wght@100&display=swap" rel="stylesheet">
     
 </head>
+<style>
+  #mapid {
+      height: 800px;
+      width: 100%;
+  }
+
+</style>
 <header class="header" role="banner" id="header">
     <span class="general-nav-bar">
         <div class="logo-nav-bar">
@@ -51,7 +58,13 @@
 </header>
 <body>
     <button id="submitButton" onclick="restaurar()">normal</button>
-    <div id="map"></div>
+        <label for="texto">Ingresa tu texto:</label>
+        <input type="number" id="numero" placeholder="Escribe un numero">
+
+        <button id="submitButton" onclick="sizeManipulator()">ajustar tamaño</button>
+    
+    <div id="mapid"></div>
+  
     
 
     <style>
@@ -64,7 +77,6 @@
             text-align: center;
             padding: 10px;
         }
-
     </style>
 
     <script>
@@ -79,51 +91,88 @@
 //las propiedades center y zoom estan ajustadas para playa de gandia
 
 
-var testData = {
-  data: [
-  {lat: 38.99483939673766, lng: -0.16318677844987534, count: 1},
-  {lat: 38.996218181059106, lng: -0.1660760830006123, count: 3},
-  {lat: 38.995431, lng: -0.164549, count: 1},
-  {lat: 38.994652, lng: -0.162990, count: 1},
-  {lat: 38.995978, lng: -0.165348, count: 1},
-  {lat: 38.996896, lng: -0.167621, count: 3},
-  {lat: 38.995764, lng: -0.165960, count: 1},
-  {lat: 38.996587, lng: -0.167020, count: 1},
-  {lat: 38.994422, lng: -0.162377, count: 1},
-  {lat: 38.995197, lng: -0.164090, count: 1},
-  {lat: 38.997123, lng: -0.168212, count: 3}
-]
-};
 
-var baseLayer = L.tileLayer(
-  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution: '...',
-    maxZoom: 18
-  }
-);
-var cfg = {
-  "radius": 0.001,
-  "scaleRadius": true,
-  "useLocalExtrema": true,
-  latField: 'lat',
-  lngField: 'lng',
-  valueField: 'count',
-  minOpacity:0.1,
-  gradient: {
-    '.3': 'green',
-    '.5': 'yellow',
-    '.6': 'red'
-  },
-};
-var heatmapLayer = new HeatmapOverlay(cfg);
-var map = new L.Map('map', {
-  center: new L.LatLng(38.99592122004998, -0.16600370993846877),
-  zoom: 19,
-  layers: [baseLayer, heatmapLayer]
-});
-heatmapLayer.setData(testData);
+
+var map = L.map('mapid', {
+       center: [38.99592122004998, -0.16600370993846877],
+       zoom: 12,
+       minZoom: 8,
+       });
+   
+   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+           subdomains: 'abc'
+       }).addTo(map);
+var heatmap = L.webGLHeatmap({
+       //boton que reduzca o aumente el size para distinguir de donde estan los valores
+       size: 600,
+       units: 'm',
+       alphaRange: 0.4,
+       gradientTexture:'verdeAzulRojo.png'
+       
+   });
+   var testData = [
+  [38.994935351205086, -0.1630294628697455, 122],
+  [38.996506627357114, -0.16616833188428506, 51],
+  [39.001950211119556, -0.15866192566452994, 51],
+  [38.9951934988745, -0.15772476578614314, 51],
+  [38.99044454914907, -0.16175850771725797, 70],
+  [38.9913462604159, -0.15157542889469855, 60],
+  [39.00327333340047, -0.16567546920402404, 50],
+  [39.0014222594937, -0.16891976595151095, 50],
+  [39.00692383559829, -0.16964198258526753, 50],
+  [39.009570967845036, -0.1689402637659104, 50],
+  [38.99294179926074, -0.165122074327554, 50],
+  [38.985876355835764, -0.16242933771694143, 50],
+  [38.99617236758804, -0.15513126576326267, 100],
+  [38.9971408090036, -0.15170848755124233, 70],
+  [38.99555827049106, -0.1721478632198201, 50],
+  [38.99206776306875, -0.17293886655993765, 50],
+  [38.9872022989057, -0.17014470074760563, 80],
+  [38.979149102183456, -0.17060404268709747, 50],
+  [38.99432263769214, -0.16435199095120828, 50],
+  [38.99553233159583, -0.1641480398239923, 50],
+  [38.99660329071318, -0.16478599991837672, 50]
+];
+var newPoints = generatePointsAround(testData);
+heatmap.setData(newPoints);
+heatmap.multiply(1.3);
 update();
+try {
+       map.addLayer(heatmap);
+   } catch (e) {
+       throw e;
+   }
+function generatePointsAround(dataPoints) {
+    //ESTO FUNCIONA CON CLIPS PAPEL Y CELO COMO SE TOQUE MINIMAMENTE ALGO SALDRAN DONUTS
+    //lo mas importante es que numAdditionalPoints este en 1 
+    //AVISADO QUEDAS VALUE ORIGINAL: 1,0.003,/100
+    // Generate points in a randomly deformed circular pattern around each original point
+        const newPoints = [];
+        const numAdditionalPoints = 1;
+        const baseRadius = 0.000001; // Adjust the base radius as needed
 
+        for (let i = 0; i < dataPoints.length; i++) {
+            const [lat, lng, originalIntensity] = dataPoints[i];
+
+            for (let j = 0; j < numAdditionalPoints; j++) {
+            // Generate points in a deformed circular pattern with random radius variations
+            const randomRadiusVariation = 0.001 * 0.001; // Adjust the variation range as needed
+            const randomAngle = 0.001 * 2 * Math.PI;
+
+            // Calculate coordinates based on polar coordinates with random variations
+            const newLat = lat + (baseRadius + randomRadiusVariation) * Math.cos(randomAngle);
+            const newLng = lng + (baseRadius + randomRadiusVariation) * Math.sin(randomAngle);
+
+            // Calculate intensity for the new point based on the original intensity
+            const intensity = originalIntensity / 200;
+
+            // Add new point with adjusted intensity and randomly deformed coordinates
+            newPoints.push([newLat, newLng, intensity]);
+            }
+        }
+
+        return newPoints;
+        }
 
 //meter los datos del servidor... SALVAME DONALD TRUMP SALVAME!
             //transforma los estupidos datos de los cojones en algo usable para chad mapa
@@ -166,29 +215,17 @@ update();
             
     function update() {
         obtenerMediciones(function (mediciones) {
-
-          var jsonData = {
-            data: []
-          };
+            var transformedTestData = [];
 
           mediciones.forEach((medicion) => {
             console.log("ITERANDO: " + medicion.idMedicion);
             console.log("LUGAR: " + medicion.lugar);
             console.log("VALOR: " + medicion.valor);
 
-            lugar=transformarDatos(medicion.lugar)
-            var dataEntry = {
-              lat: lugar.lat, 
-              lng: lugar.lng,
-              count: medicion.valor
-            };
-            var dataEntry2 = {
-              lat:38.995831, 
-              lng:-0.158177,
-              count:500
-            }
-            jsonData.data.push(dataEntry);
-            jsonData.data.push(dataEntry2);
+            lugar = transformarDatos(medicion.lugar);
+            var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
+
+            transformedTestData.push(dataEntry);
           });
             
           heatmapLayer.setData(jsonData);
@@ -218,6 +255,26 @@ update();
         return {
           data: datosFiltrados
         };
+        }
+        function clearHeatmap(mapa){
+            mapa.clear();
+        }
+        function upload(mapa){
+            var newPoints = generatePointsAround(testData);
+            mapa.setData(newPoints);
+            mapa.multiply(1.3);
+        }
+        //funcion para el saber donde estan los puntos/sizear los puntos del mapa de calor
+        function sizeManipulator(){
+           var sizeH = document.getElementById('numero').value;
+           if (!isNaN(sizeH) && sizeH !== '') {
+                heatmap.size=sizeH;
+                heatmap.clear();
+                upload(heatmap);
+            } else {
+                alert('Por favor, ingresa un valor numérico válido en el campo de número.');
+            }
+           
         }
       
           
@@ -263,19 +320,18 @@ update();
 
         // Use regular expressions to find the desired numbers
         var integratedOzoneMatch = html.match(/Integrated Ozone \[DU\]:\s*([\d.]+)/);
-        var residualOzoneMatch = html.match(/Residual Ozone \[DU\]:\s*([\d.]+)/);
+        var residualOzoneMatch = html.match(/Residual Ozone\s*\[DU\]:\s*([\d.]+)/);
+        
 
         // Check if matches were found and extract the numbers
-        if (integratedOzoneMatch) {
+        if (integratedOzoneMatch && residualOzoneMatch) {
             var integratedOzoneValue = parseFloat(integratedOzoneMatch[1]);
             console.log("Integrated Ozone:", integratedOzoneValue);
             var marker = L.marker([40.42697795042544, -3.698073083157613]).addTo(map);
-            marker.bindPopup("Valor del ozono = " + integratedOzoneValue.toString());
-        }
-
-        if (residualOzoneMatch) {
+            
             var residualOzoneValue = parseFloat(residualOzoneMatch[1]);
             console.log("Residual Ozone:", residualOzoneValue);
+            marker.bindPopup("Valor del ozono = " + integratedOzoneValue.toString() + " Dobsons<br> Valor del ozono Residual = "+residualOzoneValue.toString() + " Dobsons");
         }
               })
               .catch(error => console.error('Error fetching data:', error));
@@ -283,7 +339,6 @@ update();
    
    
   </script>
-   </script>
-   
+   </script> 
 </body>
 </html>
