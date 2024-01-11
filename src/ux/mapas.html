@@ -91,7 +91,7 @@
 //las propiedades center y zoom estan ajustadas para playa de gandia
 
 
-
+var datosGOD;
 
 var map = L.map('mapid', {
        center: [38.99592122004998, -0.16600370993846877],
@@ -216,8 +216,9 @@ function generatePointsAround(dataPoints) {
     function update() {
         obtenerMediciones(function (mediciones) {
             var transformedTestData = [];
-
+            console.log(mediciones);
           mediciones.forEach((medicion) => {
+            
             console.log("ITERANDO: " + medicion.idMedicion);
             console.log("LUGAR: " + medicion.lugar);
             console.log("VALOR: " + medicion.valor);
@@ -227,8 +228,8 @@ function generatePointsAround(dataPoints) {
 
             transformedTestData.push(dataEntry);
           });
-            
-          heatmapLayer.setData(jsonData);
+          datosGOD = generatePointsAround(transformedTestData);
+          heatmap.setData(datosGOD);
 
         });
     }
@@ -260,8 +261,7 @@ function generatePointsAround(dataPoints) {
             mapa.clear();
         }
         function upload(mapa){
-            var newPoints = generatePointsAround(testData);
-            mapa.setData(newPoints);
+            mapa.setData(datosGOD);
             mapa.multiply(1.3);
         }
         //funcion para el saber donde estan los puntos/sizear los puntos del mapa de calor

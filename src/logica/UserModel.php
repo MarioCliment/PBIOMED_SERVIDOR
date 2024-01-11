@@ -24,6 +24,15 @@ class UserModel extends Database
         return $this->select("SELECT * FROM usuario WHERE nickname = '$nickname'");
     }
 
+    //Funcion para obtener un usuario
+    //-----------------------------------------------------------------------
+    // string -> getThisUser() -> usuario
+    //-----------------------------------------------------------------------
+    public function getThisUserViaEmail($email)
+    {
+        return $this->select("SELECT * FROM usuario WHERE email = '$email'");
+    }
+
     //Funcion para añadir un usuario
     //-----------------------------------------------------------------------
     // string, string, string, string -> addUser() -> ToF
@@ -118,21 +127,19 @@ class UserModel extends Database
 
     }
 
-    //Funcion para devolver el email del usuario
-    //-----------------------------------------------------------------------
-    // objetoUsuario -> returnEmail() -> string
-    //-----------------------------------------------------------------------
-    private function returnEmail($userData){
-        return $userData[0]["email"];
-    }
+    
 
     public function sendEmail($email){
+        $userData = $this->getThisUserViaEmail($email);
+
+        $nickname =  $this->returnNickname($userData);
+
         // Varios destinatarios
         $para  = $email . ', '; // atención a la coma
         //$para .= 'example@example.com';
 
         // título
-        $título = 'Gracias por registrarte';
+        $título = 'Gracias por registrarte '.$nickname.'!';
 
         //aleatoria
         $codigo = rand(1000,9999);
@@ -147,7 +154,7 @@ class UserModel extends Database
         <html>
         <head>
             <meta charset="UTF8" />
-        <title>Recordatorio de cumpleaños para Agosto</title>
+        <title>Codigo de verificación para tu cuenta</title>
         </head>
         <body>
         <p>TU CÓDIGO DE VERIFICACIÓN ES : </p>
@@ -157,6 +164,7 @@ class UserModel extends Database
             href="http://'.$ipserver.'/PBIOMED_SERVIDOR/src/ux/verification/confirmation.php?email='.$email.'">
             VERIFICA TU CUENTA </a> 
         </p>
+        <p>No compartas este código con nadie, Ozone Warden jamás te llamara o enviará un mensaje por teléfono </p>
         
         
         </body>
@@ -257,6 +265,24 @@ class UserModel extends Database
     return $this->select("SELECT mediciones.* FROM `usuario-medicion` JOIN mediciones
         ON `usuario-medicion`.idMedicion = mediciones.idMedicion WHERE `usuario-medicion`.email = '$email' ORDER BY `mediciones`.idMedicion DESC LIMIT ?", ["i", $limit]);
 */
+
+
+//Funcion para devolver el email del usuario
+    //-----------------------------------------------------------------------
+    // objetoUsuario -> returnEmail() -> string
+    //-----------------------------------------------------------------------
+    private function returnEmail($userData){
+        return $userData[0]["email"];
+    }
+
+    //Funcion para devolver el nickname del usuario
+    //-----------------------------------------------------------------------
+    // objetoUsuario -> returnNickname() -> string
+    //-----------------------------------------------------------------------
+    private function returnNickname($userData){
+        return $userData[0]["nickname"];
+    }
+
 
 
 }

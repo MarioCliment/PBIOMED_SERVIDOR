@@ -56,6 +56,7 @@ if (!medicionesTable) {
     startAutoUpdate();
 
     stopUpdateButton.addEventListener('click', () => {
+        console.log("Detengo actualización")
         updating = !updating;
     });
 }

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/infoAd.css">
+    <script src="js/buscarEnTabla.js"></script>
 </head>
 
 <body style="margin-bottom: 4.3rem;">
@@ -11,6 +12,18 @@
         <!-- ... (código existente) ... -->
     </header>
     <h1>Lista de Usuarios</h1>
+
+    <input type="text" id="myInput" placeholder="Busca por nombres.." oninput="buscarEnTabla()">
+    
+    <p><button onclick="sortTable()">Ordena por fecha ascendente (De mas antigua a mas nueva)</button></p>
+
+    <h2>Ordenar por...</h2>
+    <select name="ordenar" id="ordenar" onchange="order(value)">
+        <option value="...">...</option>
+        <option value="fechaAscendente">Ordena por fecha ascendente (De mas antigua a mas nueva)</option>
+        <option value="fechaDescendente">Ordena por fecha descendente (De mas nueva a mas antigua)</option>
+        
+    </select>
 
     <!-- Tabla para mostrar información de usuarios -->
     <div class="tabla">
@@ -24,15 +37,18 @@
                 <!-- Aquí se cargarán los usuarios dinámicamente -->
             </table>
             <table id="usuariosTable" class="mediciones">
+                
                 <tr>
-                    <th>Email</th>
-                    <th>Última Fecha de Envío</th>
-                    <th>Nombre y Apellidos</th>
+                    <th>None</th>
+                    <th>None</th>
+                    <th>None</th>
                 </tr>
                 <!-- Aquí se cargarán los usuarios dinámicamente -->
             </table>
         </div>
     </div>
+
+    <script src="js/ordenarFecha.js"></script>
 
     <div class="botones">
         <!-- Botón para detener la actualización -->
@@ -41,11 +57,22 @@
         <!-- Botón para cerrar sesión -->
         <button id="logoutButton" class="boton">Cerrar Sesión</button>
     </div>
-
     <!-- Incluye el archivo JavaScript para la actualización en tiempo real -->
     <script src="logica/recuperarUsuarios.js"></script>
+    
     <!-- Incluye el archivo JavaScript para cerrar sesión -->
     <script src="logica/cerrarSesion.js"></script>
 </body>
-
+    <script>
+    function order(x){
+        console.log(x)
+            if (x == "fechaAscendente") {
+                sortTableAsc()
+            }
+            else if (x == "fechaDescendente"){
+                sortTableDesc()
+            }
+    }
+        
+    </script>
 </html>
