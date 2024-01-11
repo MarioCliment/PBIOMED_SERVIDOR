@@ -58,10 +58,15 @@
 </header>
 <body>
     <button id="submitButton" onclick="restaurar()">normal</button>
-        <label for="texto">Ingresa tu texto:</label>
+        <label for="texto"style="color: black;">Ingresa tu texto:</label>
         <input type="number" id="numero" placeholder="Escribe un numero">
 
         <button id="submitButton" onclick="sizeManipulator()">ajustar tamaño</button>
+        <input type="month" id="start" name="start" min="2023-01" value="2023-01" onchange="actualizarFecha()"/> 
+        <select id="selectOption" name="selectOption" onchange="actualizarOpcion()">
+            <option value="11">Ozono</option>
+            <option value="12">Temperatura</option>
+        </select>
     
     <div id="mapid"></div>
   
@@ -136,7 +141,7 @@ var heatmap = L.webGLHeatmap({
 var newPoints = generatePointsAround(testData);
 heatmap.setData(newPoints);
 heatmap.multiply(1.3);
-update();
+update(11);
 try {
        map.addLayer(heatmap);
    } catch (e) {
@@ -213,7 +218,7 @@ function generatePointsAround(dataPoints) {
               xmlhttp.send();
             }
             
-    function update() {
+    /*function update() {
         obtenerMediciones(function (mediciones) {
             var transformedTestData = [];
             console.log(mediciones);
@@ -232,11 +237,87 @@ function generatePointsAround(dataPoints) {
           heatmap.setData(datosGOD);
 
         });
-    }
+    }*/
+    function update(idMedir) {
+    obtenerMediciones(function (mediciones) {
+        var transformedTestData = [];
+        mediciones.forEach((medicion) => {
+            // Filtrar solo las mediciones con idMedicion igual a idMedir
+            if (medicion.idTipoMedicion === idMedir) {
+                console.log("ITERANDO: " + medicion.idMedicion);
+                console.log("LUGAR: " + medicion.lugar);
+                console.log("VALOR: " + medicion.valor);
 
+                lugar = transformarDatos(medicion.lugar);
+                var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
 
+                transformedTestData.push(dataEntry);
+            }
+        });
+        datosGOD = generatePointsAround(transformedTestData);
+        heatmap.setData(datosGOD);
+    });
+}
+function updateFechas(fecha) {
+    obtenerMediciones(function (mediciones) {
+        var transformedTestData = [];
 
+        mediciones.forEach((medicion) => {
+            // huh??? esto funcionaria??? 
+            if (formatearFecha(medicion.fecha) === fecha) {
+                console.log("ITERANDO: " + medicion.idMedicion);
+                console.log("LUGAR: " + medicion.lugar);
+                console.log("VALOR: " + medicion.valor);
 
+                lugar = transformarDatos(medicion.lugar);
+                var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
+
+                transformedTestData.push(dataEntry);
+            }
+        });
+        //transformedTestData es lo que habria que poner en un excel
+        //ANTES DE QUE GENERATE POINTS AROUND LO TOQUE!!!!
+        var newData = generatePointsAround(transformedTestData);
+        heatmap.setData(transformedTestData);
+    });
+}
+function formatearFecha(fecha) {
+  // Crear un objeto Date a partir de la cadena de fecha proporcionada
+  let fechaObj = new Date(fecha);
+
+  // Obtener el año y el mes
+  let year = fechaObj.getFullYear();
+  let month = fechaObj.getMonth() + 1; // El mes va de 0 a 11, por lo que sumamos 1
+
+  // Agregar un cero delante del mes si es necesario (para que siempre tenga dos dígitos)
+  if (month < 10) {
+    month = '0' + month;
+  }
+
+  // Crear la cadena formateada en el formato deseado
+  let fechaFormateada = year + '-' + month;
+
+  return fechaFormateada;
+}
+
+function glumboFecha() {
+    var seleccion = document.getElementById('start').value;
+    alert('Fecha seleccionada: ' + seleccion);
+    
+    // Aquí puedes agregar lógica adicional para manejar la fecha seleccionada.
+    // Por ejemplo, podrías enviarla a un servidor para realizar alguna acción.
+  }
+function actualizarOpcion() {
+    var seleccion = document.getElementById('selectOption').value;
+
+    alert('Opción seleccionada: ' + seleccion);
+    update(seleccion);
+  }
+  function actualizarFecha() {
+    var seleccion = document.getElementById('start').value;
+    alert('Opción seleccionada: ' + seleccion);
+    updateFechas(seleccion);
+  }
 
 
 
