@@ -56,7 +56,11 @@
     </nav>
     <!--Menu end-->
 </header>
+
 <body>
+    <img src="./mapResources/ozonoLeyenda.png" width="20%"height="10%">
+    <img src="./mapResources/temperaturaLeyenda.png" width="20%"height="10%">
+    
     <button id="submitButton" onclick="restaurar()">normal</button>
         <label for="texto"style="color: black;">Ingresa tu texto:</label>
         <input type="number" id="numero" placeholder="Escribe un numero">
@@ -67,7 +71,7 @@
             <option value="11">Ozono</option>
             <option value="12">Temperatura</option>
         </select>
-    
+        
     <div id="mapid"></div>
   
     
@@ -117,8 +121,8 @@ var heatmap = L.webGLHeatmap({
        
    });
    var testData = [
-  [38.994935351205086, -0.1630294628697455, 122],
-  [38.996506627357114, -0.16616833188428506, 51],
+  [38.994935351205086, -0.1630294628697455, 150],
+  [38.996506627357114, -0.16616833188428506, 50],
   [39.001950211119556, -0.15866192566452994, 51],
   [38.9951934988745, -0.15772476578614314, 51],
   [38.99044454914907, -0.16175850771725797, 70],
@@ -129,7 +133,7 @@ var heatmap = L.webGLHeatmap({
   [39.009570967845036, -0.1689402637659104, 50],
   [38.99294179926074, -0.165122074327554, 50],
   [38.985876355835764, -0.16242933771694143, 50],
-  [38.99617236758804, -0.15513126576326267, 100],
+  [38.99617236758804, -0.15513126576326267, 40],
   [38.9971408090036, -0.15170848755124233, 70],
   [38.99555827049106, -0.1721478632198201, 50],
   [38.99206776306875, -0.17293886655993765, 50],
@@ -143,7 +147,7 @@ var heatmap = L.webGLHeatmap({
 var newPoints = generatePointsAround(testData);
 var datosGOD = newPoints;
 heatmap.setData(newPoints);
-heatmap.multiply(1.3);
+heatmap.multiply(4);
 actualizarFecha();
 update(11);
 try {
@@ -173,7 +177,7 @@ function generatePointsAround(dataPoints) {
             const newLng = lng + (baseRadius + randomRadiusVariation) * Math.sin(randomAngle);
 
             // Calculate intensity for the new point based on the original intensity
-            const intensity = originalIntensity / 200;
+            const intensity = originalIntensity / 160;
 
             // Add new point with adjusted intensity and randomly deformed coordinates
             newPoints.push([newLat, newLng, intensity]);
@@ -256,12 +260,14 @@ function generatePointsAround(dataPoints) {
 
                 lugar = transformarDatos(medicion.lugar);
                 var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
-
+                if(medicion.idTipoMedicion == 12){
+                    medicion.valor*4;
+                }
                 transformedTestData.push(dataEntry);
             }
         });
         datosGOD = generatePointsAround(transformedTestData);
-        heatmap.setData(datosGOD);
+                heatmap.setData(datosGOD);
         current[1] = idMedir;
     }
     else{
@@ -272,7 +278,9 @@ function generatePointsAround(dataPoints) {
                 console.log("ITERANDO: " + medicion.idMedicion);
                 console.log("LUGAR: " + medicion.lugar);
                 console.log("VALOR: " + medicion.valor);
-
+                if(medicion.idTipoMedicion == 12){
+                    medicion.valor*4;
+                }
                 lugar = transformarDatos(medicion.lugar);
                 var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
 
@@ -301,6 +309,7 @@ function updateFechas(fecha) {
                 lugar = transformarDatos(medicion.lugar);
                 var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
                 datosGOD = generatePointsAround(transformedTestData);
+                heatmap.multiply(1.3);
                 heatmap.setData(datosGOD);
                 transformedTestData.push(dataEntry);
             }
@@ -308,6 +317,7 @@ function updateFechas(fecha) {
         //transformedTestData es lo que habria que poner en un excel
         //ANTES DE QUE GENERATE POINTS AROUND LO TOQUE!!!!
         var newData = generatePointsAround(transformedTestData);
+        heatmap.multiply(1.3);
         heatmap.setData(transformedTestData);
         current[0] = fecha;
          }
@@ -329,6 +339,7 @@ function updateFechas(fecha) {
                 //transformedTestData es lo que habria que poner en un excel
                 //ANTES DE QUE GENERATE POINTS AROUND LO TOQUE!!!!
                 datosGOD = generatePointsAround(transformedTestData);
+                heatmap.multiply(1.3);
                 heatmap.setData(datosGOD);
                 current[0] = fecha;
         }
@@ -369,7 +380,7 @@ function actualizarOpcion() {
     updateFechas(seleccion);
   }
 
-  
+
   function clearHeatmap(mapa){
             mapa.clear();
         }
