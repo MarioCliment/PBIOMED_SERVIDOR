@@ -96,7 +96,8 @@
 //las propiedades center y zoom estan ajustadas para playa de gandia
 
 
-var datosGOD;
+
+var current;
 
 var map = L.map('mapid', {
        center: [38.99592122004998, -0.16600370993846877],
@@ -138,7 +139,9 @@ var heatmap = L.webGLHeatmap({
   [38.99553233159583, -0.1641480398239923, 50],
   [38.99660329071318, -0.16478599991837672, 50]
 ];
+
 var newPoints = generatePointsAround(testData);
+var datosGOD = newPoints;
 heatmap.setData(newPoints);
 heatmap.multiply(1.3);
 update(11);
@@ -241,6 +244,8 @@ function generatePointsAround(dataPoints) {
     function update(idMedir) {
     obtenerMediciones(function (mediciones) {
         var transformedTestData = [];
+        if(current[0] == null){
+        clearHeatmap(heatmap);
         mediciones.forEach((medicion) => {
             // Filtrar solo las mediciones con idMedicion igual a idMedir
             if (medicion.idTipoMedicion === idMedir) {
@@ -256,15 +261,13 @@ function generatePointsAround(dataPoints) {
         });
         datosGOD = generatePointsAround(transformedTestData);
         heatmap.setData(datosGOD);
-    });
-}
-function updateFechas(fecha) {
-    obtenerMediciones(function (mediciones) {
-        var transformedTestData = [];
-
+        current[1] = idMedir;
+    }
+    else{
+        clearHeatmap(heatmap);
         mediciones.forEach((medicion) => {
-            // huh??? esto funcionaria??? 
-            if (formatearFecha(medicion.fecha) === fecha) {
+            // Filtrar solo las mediciones con idMedicion igual a idMedir
+            if (medicion.idTipoMedicion === idMedir && current[0]==formatearFecha(medicion.fecha)) {
                 console.log("ITERANDO: " + medicion.idMedicion);
                 console.log("LUGAR: " + medicion.lugar);
                 console.log("VALOR: " + medicion.valor);
@@ -275,10 +278,58 @@ function updateFechas(fecha) {
                 transformedTestData.push(dataEntry);
             }
         });
+        datosGOD = generatePointsAround(transformedTestData);
+        heatmap.setData(datosGOD);
+        current[1] = idMedir;
+    }
+    });
+}
+function updateFechas(fecha) {
+    obtenerMediciones(function (mediciones) {
+        var transformedTestData = [];
+        if(current[1] == null){
+        clearHeatmap(heatmap);
+        mediciones.forEach((medicion) => {
+            // huh??? esto funcionaria??? 
+            if (formatearFecha(medicion.fecha) === fecha) {
+                console.log("ITERANDO: " + medicion.idMedicion);
+                console.log("LUGAR: " + medicion.lugar);
+                console.log("VALOR: " + medicion.valor);
+
+                lugar = transformarDatos(medicion.lugar);
+                var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
+                datosGOD = generatePointsAround(transformedTestData);
+                heatmap.setData(datosGOD);
+                transformedTestData.push(dataEntry);
+            }
+        });
         //transformedTestData es lo que habria que poner en un excel
         //ANTES DE QUE GENERATE POINTS AROUND LO TOQUE!!!!
         var newData = generatePointsAround(transformedTestData);
         heatmap.setData(transformedTestData);
+        current[0] = fecha;
+         }
+            else{
+                clearHeatmap(heatmap);
+                    mediciones.forEach((medicion) => {
+            // huh??? esto funcionaria??? 
+            if (formatearFecha(medicion.fecha) === fecha && medicion.idTipoMedicion ==current[1]) {
+                console.log("ITERANDO: " + medicion.idMedicion);
+                console.log("LUGAR: " + medicion.lugar);
+                console.log("VALOR: " + medicion.valor);
+
+                lugar = transformarDatos(medicion.lugar);
+                var dataEntry = [lugar.lat, lugar.lng, medicion.valor];
+
+                transformedTestData.push(dataEntry);
+                }
+                });
+                //transformedTestData es lo que habria que poner en un excel
+                //ANTES DE QUE GENERATE POINTS AROUND LO TOQUE!!!!
+                datosGOD = generatePointsAround(transformedTestData);
+                heatmap.setData(datosGOD);
+                current[0] = fecha;
+        }
     });
 }
 function formatearFecha(fecha) {
@@ -324,7 +375,11 @@ function actualizarOpcion() {
     </script>
     <script>
         function restaurar(){
-         heatmapLayer.setData(testData);
+         heatmap.setData(datosGOD);
+         heatmap.size=600;
+         heatmap.clear();
+         upload(heatmap);
+
         }
         function high() {
           var testDatanuevo = filtro(testData,3);
@@ -343,7 +398,6 @@ function actualizarOpcion() {
         }
         function upload(mapa){
             mapa.setData(datosGOD);
-            mapa.multiply(1.3);
         }
         //funcion para el saber donde estan los puntos/sizear los puntos del mapa de calor
         function sizeManipulator(){
