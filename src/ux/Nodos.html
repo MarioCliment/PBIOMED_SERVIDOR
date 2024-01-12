@@ -4,26 +4,39 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/infoAd.css">
+    
     <script src="js/buscarEnTabla.js"></script>
+
 </head>
 
 <body style="margin-bottom: 4.3rem;">
     <header>
-        <!-- ... (código existente) ... -->
+        <a href="index.html">
+            <img class="logo" src="images/logoOzonoWarden/3.png" alt="Logo de la empresa">
+        </a>
+        <nav class="main-nav" id="menu">
+            <ul class="menu">
+                <a href="index.html" target="" class="link-menu">
+                    <li class="item-menu">Inicio</li>
+                </a>
+            </ul>
+        </nav>
     </header>
     <h1>Lista de Usuarios</h1>
 
     <input type="text" id="myInput" placeholder="Busca por nombres.." oninput="buscarEnTabla()">
     
-    <p><button onclick="sortTable()">Ordena por fecha ascendente (De mas antigua a mas nueva)</button></p>
+    <p style="display: none;"><button onclick="sortTable()">Ordena por fecha ascendente (De mas antigua a mas nueva)</button></p>
 
-    <h2>Ordenar por...</h2>
-    <select name="ordenar" id="ordenar" onchange="order(value)">
-        <option value="...">...</option>
-        <option value="fechaAscendente">Ordena por fecha ascendente (De mas antigua a mas nueva)</option>
-        <option value="fechaDescendente">Ordena por fecha descendente (De mas nueva a mas antigua)</option>
-        
-    </select>
+    
+    <div class="custom-select" style="width:200px; margin: 20px 10px;">
+        <h2>Ordenar por...</h2>
+        <select name="ordenar" id="ordenar" onchange="order(value)">
+            <option value="...">...</option>
+            <option value="fechaAscendente">Ordena por fecha ascendente</option>
+            <option value="fechaDescendente">Ordena por fecha descendente</option>
+        </select>
+    </div>
 
     <!-- Tabla para mostrar información de usuarios -->
     <div class="tabla">
@@ -75,4 +88,5 @@
     }
         
     </script>
+    
 </html>

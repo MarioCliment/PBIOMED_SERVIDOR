@@ -127,6 +127,34 @@ class UserModel extends Database
 
     }
 
+    //Funcion para verificar el login un usuario
+    //-----------------------------------------------------------------------
+    // string, string -> getAllUserMeasures() -> array{mediciones}
+    //-----------------------------------------------------------------------
+    public function getLastUserValue($nickname, $idTipoMedicion){
+        $limit = 1;
+        $userData = $this->getThisUser($nickname);
+        $email = $this->returnEmail($userData);
+
+        return $this->select("SELECT mediciones.* FROM `usuario-medicion` JOIN mediciones
+        ON `usuario-medicion`.idMedicion = mediciones.idMedicion WHERE `usuario-medicion`.email = '$email' AND `mediciones`.idTipoMedicion =  $idTipoMedicion ORDER BY `mediciones`.idMedicion DESC LIMIT ?", ["i", $limit]);
+
+    }
+
+    //Funcion para verificar el login un usuario
+    //-----------------------------------------------------------------------
+    // string, string -> getAllUserMeasures() -> array{mediciones}
+    //-----------------------------------------------------------------------
+    public function getLastUserOzone($nickname, ){
+        $limit = 1;
+        $userData = $this->getThisUser($nickname);
+        $email = $this->returnEmail($userData);
+
+        return $this->select("SELECT mediciones.* FROM `usuario-medicion` JOIN mediciones
+        ON `usuario-medicion`.idMedicion = mediciones.idMedicion WHERE `usuario-medicion`.email = '$email' ORDER BY `mediciones`.idMedicion DESC LIMIT ?", ["i", $limit]);
+
+    }
+
     
 
     public function sendEmail($email, $nickname){
@@ -142,8 +170,8 @@ class UserModel extends Database
         $codigo = rand(1000,9999);
 
         //CAMBIAR IP PARA USOS
-        $ipserver = "192.168.1.148:80"; //CASA GRASA
-        //$ipserver = "192.168.10.7:80"; //MOVIL MAYRO
+        //$ipserver = "192.168.1.148:80"; //CASA GRASA
+        $ipserver = "172.20.10.2:80"; //MOVIL MAYRO
   
 
         // mensaje
