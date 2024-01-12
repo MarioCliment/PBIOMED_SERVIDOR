@@ -58,8 +58,8 @@
 </header>
 
 <body>
-    <img src="./mapResources/ozonoLeyenda.png" width="20%"height="10%">
-    <img src="./mapResources/temperaturaLeyenda.png" width="20%"height="10%">
+    <img id="ozonoLeyenda" src="./mapResources/ozonoLeyenda.png" width="20%" height="10%">
+    <img id="temperaturaLeyenda" src="./mapResources/temperaturaLeyenda.png" width="20%" height="10%">
     
     <button id="submitButton" onclick="restaurar()">normal</button>
         <label for="texto"style="color: black;">Ingresa tu texto:</label>
@@ -67,7 +67,7 @@
 
         <button id="submitButton" onclick="sizeManipulator()">ajustar tamaño</button>
         <input type="month" id="start" name="start" min="2023-11" value="2023-11" onchange="actualizarFecha()"/> 
-        <select id="selectOption" name="selectOption" onchange="actualizarOpcion()">
+        <select id="selectOption" name="selectOption" onchange="actualizarOpcion()" onchange="">
             <option value="11">Ozono</option>
             <option value="12">Temperatura</option>
         </select>
@@ -102,7 +102,8 @@
 
 
 var current = [];
-
+ozonoLeyenda.style.display = "block";
+temperaturaLeyenda.style.display = "none";
 var map = L.map('mapid', {
        center: [38.99592122004998, -0.16600370993846877],
        zoom: 17,
@@ -372,6 +373,7 @@ function glumboFecha() {
     // Por ejemplo, podrías enviarla a un servidor para realizar alguna acción.
   }
 function actualizarOpcion() {
+    glumbo();
     var seleccion = document.getElementById('selectOption').value;
     update(seleccion);
   }
@@ -486,5 +488,22 @@ function actualizarOpcion() {
    
   </script>
    </script> 
+   <script>
+    function glumbo() {
+      var selectElement = document.getElementById("selectOption");
+      var ozonoLeyenda = document.getElementById("ozonoLeyenda");
+      var temperaturaLeyenda = document.getElementById("temperaturaLeyenda");
+
+      if (selectElement.value === "11") {
+        // Show ozonoLeyenda and hide temperaturaLeyenda
+        ozonoLeyenda.style.display = "block";
+        temperaturaLeyenda.style.display = "none";
+      } else if (selectElement.value === "12") {
+        // Show temperaturaLeyenda and hide ozonoLeyenda
+        temperaturaLeyenda.style.display = "block";
+        ozonoLeyenda.style.display = "none";
+      }
+    }
+   </script>
 </body>
 </html>
