@@ -129,24 +129,21 @@ class UserModel extends Database
 
     
 
-    public function sendEmail($email){
-        $userData = $this->getThisUserViaEmail($email);
-
-        $nickname =  $this->returnNickname($userData);
+    public function sendEmail($email, $nickname){
 
         // Varios destinatarios
         $para  = $email . ', '; // atención a la coma
         //$para .= 'example@example.com';
 
         // título
-        $título = 'Gracias por registrarte '.$nickname.'!';
+        $título = 'Verificación de usuario Ozone Warden. ¡Bienvenido '.$nickname.'!';
 
         //aleatoria
         $codigo = rand(1000,9999);
 
         //CAMBIAR IP PARA USOS
-        //$ipserver = "192.168.1.148:80"; //CASA GRASA
-        $ipserver = "192.168.10.7:80"; //MOVIL MAYRO
+        $ipserver = "192.168.1.148:80"; //CASA GRASA
+        //$ipserver = "192.168.10.7:80"; //MOVIL MAYRO
   
 
         // mensaje
@@ -157,14 +154,14 @@ class UserModel extends Database
         <title>Codigo de verificación para tu cuenta</title>
         </head>
         <body>
-        <p>TU CÓDIGO DE VERIFICACIÓN ES : </p>
+        <p>Gracias por confiar en Ozone Warden. Para finalizar su registro y verficiar su cuenta, introduzca el siguiente código: </p>
         <h2>'.$codigo.'</h2>
         <p> 
             <a 
             href="http://'.$ipserver.'/PBIOMED_SERVIDOR/src/ux/verification/confirmation.php?email='.$email.'">
             VERIFICA TU CUENTA </a> 
         </p>
-        <p>No compartas este código con nadie, Ozone Warden jamás te llamara o enviará un mensaje por teléfono </p>
+        <p>No compartas este código con nadie, Ozone Warden jamás te llamara o enviará un mensaje por teléfono solicitando el código </p>
         
         
         </body>

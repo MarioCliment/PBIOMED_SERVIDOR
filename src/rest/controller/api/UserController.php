@@ -94,10 +94,11 @@ class UserController extends BaseController
                 $this->objetoResultado = new stdClass;
 
                 $email = $data->email;
-                $result = $userModel->sendEmail($email);
+                $nickname = $data->nickname;
                 $contrasenya = $data->contrasenya;  
                 $nombreApellidos = $data->nombreApellidos;  
-                $nickname = $data->nickname; 
+                
+                $result = $userModel->sendEmail($email, $nickname);
                 $codigo = $result->codigo;
                 $this->objetoResultado->enviado = $result->enviado;
 

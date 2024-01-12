@@ -69,6 +69,8 @@ switch ($requestedResource) {
             case 'measure':
                 $measureAction = isset($uriSegments[6]) ? $uriSegments[6] : '';
                 switch ($measureAction) {
+                    case 'last':
+                        $userController->getLastUserMeasures();
                     case 'add':
                         $userController->addMeasureUser();
                         break;

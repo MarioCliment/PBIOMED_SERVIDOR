@@ -62,7 +62,7 @@
         <input type="number" id="numero" placeholder="Escribe un numero">
 
         <button id="submitButton" onclick="sizeManipulator()">ajustar tamaño</button>
-        <input type="month" id="start" name="start" min="2023-01" value="2023-01" onchange="actualizarFecha()"/> 
+        <input type="month" id="start" name="start" min="2023-11" value="2023-11" onchange="actualizarFecha()"/> 
         <select id="selectOption" name="selectOption" onchange="actualizarOpcion()">
             <option value="11">Ozono</option>
             <option value="12">Temperatura</option>
@@ -97,11 +97,11 @@
 
 
 
-var current;
+var current = [];
 
 var map = L.map('mapid', {
        center: [38.99592122004998, -0.16600370993846877],
-       zoom: 12,
+       zoom: 17,
        minZoom: 8,
        });
    
@@ -110,7 +110,7 @@ var map = L.map('mapid', {
        }).addTo(map);
 var heatmap = L.webGLHeatmap({
        //boton que reduzca o aumente el size para distinguir de donde estan los valores
-       size: 600,
+       size: 200,
        units: 'm',
        alphaRange: 0.4,
        gradientTexture:'verdeAzulRojo.png'
@@ -144,6 +144,7 @@ var newPoints = generatePointsAround(testData);
 var datosGOD = newPoints;
 heatmap.setData(newPoints);
 heatmap.multiply(1.3);
+actualizarFecha();
 update(11);
 try {
        map.addLayer(heatmap);
@@ -244,7 +245,7 @@ function generatePointsAround(dataPoints) {
     function update(idMedir) {
     obtenerMediciones(function (mediciones) {
         var transformedTestData = [];
-        if(current[0] == null){
+        if(current == null){
         clearHeatmap(heatmap);
         mediciones.forEach((medicion) => {
             // Filtrar solo las mediciones con idMedicion igual a idMedir
@@ -281,13 +282,14 @@ function generatePointsAround(dataPoints) {
         datosGOD = generatePointsAround(transformedTestData);
         heatmap.setData(datosGOD);
         current[1] = idMedir;
+        updateFechas(current[0]);
     }
     });
 }
 function updateFechas(fecha) {
     obtenerMediciones(function (mediciones) {
         var transformedTestData = [];
-        if(current[1] == null){
+        if(current == null){
         clearHeatmap(heatmap);
         mediciones.forEach((medicion) => {
             // huh??? esto funcionaria??? 
@@ -360,16 +362,17 @@ function glumboFecha() {
   }
 function actualizarOpcion() {
     var seleccion = document.getElementById('selectOption').value;
-
-    alert('Opción seleccionada: ' + seleccion);
     update(seleccion);
   }
   function actualizarFecha() {
     var seleccion = document.getElementById('start').value;
-    alert('Opción seleccionada: ' + seleccion);
     updateFechas(seleccion);
   }
 
+  
+  function clearHeatmap(mapa){
+            mapa.clear();
+        }
 
 
     </script>
@@ -392,9 +395,6 @@ function actualizarOpcion() {
         return {
           data: datosFiltrados
         };
-        }
-        function clearHeatmap(mapa){
-            mapa.clear();
         }
         function upload(mapa){
             mapa.setData(datosGOD);
